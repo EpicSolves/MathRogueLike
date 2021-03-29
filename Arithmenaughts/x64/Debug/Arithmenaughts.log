@@ -1,0 +1,145 @@
+﻿  Animation.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+  AssetManager.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  d:\dev\arithmenaughts\arithmenaughts\assetmanager.cpp(18): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[11],float,float,float,float,bool>(const char (&)[11],float &&,float &&,float &&,float &&,bool &&)' being compiled
+          with
+          [
+              T=ColliderComponent
+          ]
+  Collision.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  GameObject.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+  KeyboardController.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(41): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(45): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(47): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(92): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(102): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\keyboardcontroller.cpp(112): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Map.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Game.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(94): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(283): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(267): warning C4101: 'mouseX': unreferenced local variable
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(267): warning C4101: 'mouseY': unreferenced local variable
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(398): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(399): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(401): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(402): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(405): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(406): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(412): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(419): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(441): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(448): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(455): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(462): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(474): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(522): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(523): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(528): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(529): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(532): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(533): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(536): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(573): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(574): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(575): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(576): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(180): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=double
+          ]
+  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(186): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[7],int,int,double,double,bool>(const char (&)[7],int &&,int &&,double &&,double &&,bool &&)' being compiled
+          with
+          [
+              T=ColliderComponent
+          ]
+d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(190): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float,float,float,float,int>(float &&,float &&,float &&,float &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+  main.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+  SpriteComponent.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+  TextureManager.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+  TileComponent.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\tilecomponent.cpp(8): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\tilecomponent.cpp(9): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\tilecomponent.cpp(25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\tilecomponent.cpp(26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  UILabel.cpp
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(72): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  Arithmenaughts.vcxproj -> D:\Dev\Arithmenaughts\x64\Debug\Arithmenaughts.exe

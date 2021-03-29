@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{5916509b-f22f-4abb-8e45-254422530695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ECS">
+      <UniqueIdentifier>{1e2e456a-8cdb-441d-9a15-af9ac8084c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ECS.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2D.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardController.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="UILabel.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardController.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="UILabel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Person.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Enemy.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\dirt.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\grass.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\water.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\player_spritesheet.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\player_spritesheet_no_grid.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\player_anims.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL2_ttf.dll" />
+  </ItemGroup>
+</Project>
