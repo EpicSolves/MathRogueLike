@@ -38,10 +38,10 @@ d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(635): warning C4244: '=': c
 d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(636): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(637): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(638): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(682): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(686): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(690): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(694): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(685): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(689): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(693): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(697): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [

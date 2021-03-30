@@ -642,8 +642,11 @@ void Game::hideSolvePad() {
 	numberB.getComponent<TransformComponent>().position.x = -200;
 }
 bool Game::solvedProblem() {
-	return Game::keyState[SDL_SCANCODE_KP_1 + Game::numberAVal + Game::numberBVal - 1] ||
-		   Game::keyState[SDL_SCANCODE_KP_0 + Game::numberAVal + Game::numberBVal];
+	if (Game::keyState[SDL_SCANCODE_KP_1 + Game::numberAVal + Game::numberBVal - 1] || Game::keyState[SDL_SCANCODE_KP_0 + Game::numberAVal + Game::numberBVal])
+		return true;
+	if (Game::keyState[SDL_SCANCODE_1 + Game::numberAVal + Game::numberBVal - 1] || Game::keyState[SDL_SCANCODE_0 + Game::numberAVal + Game::numberBVal])
+		return true;
+	return false;
 }
 void Game::generatenewProblem() {
 	int currentAnswer = Game::numberAVal + Game::numberBVal;

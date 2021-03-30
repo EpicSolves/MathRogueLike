@@ -91,7 +91,6 @@ void KeyboardController::update() {
 		sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 	}
 
-
 	// We do not want to be able to shoot during the math phase
 	if (Game::keyState[SDL_SCANCODE_LCTRL] || 
 		Game::phase == Game::MATH_PHASE_0  || 
@@ -100,7 +99,7 @@ void KeyboardController::update() {
 		return;
 	 
 	// We can still solve during the fighting phase, but it is optional
-	if (Game::keyState[SDL_SCANCODE_LEFT] || Game::keyState[SDL_SCANCODE_KP_4]) {
+	if (Game::keyState[SDL_SCANCODE_LEFT] || Game::keyState[SDL_SCANCODE_KP_4] || Game::keyState[SDL_SCANCODE_H]) {
 		if (!leftDebounce) {
 			leftDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
@@ -113,7 +112,7 @@ void KeyboardController::update() {
 		}
 	}
 	else leftDebounce = false;
-	if (Game::keyState[SDL_SCANCODE_RIGHT] || Game::keyState[SDL_SCANCODE_KP_6]) {
+	if (Game::keyState[SDL_SCANCODE_RIGHT] || Game::keyState[SDL_SCANCODE_KP_6] || Game::keyState[SDL_SCANCODE_L]) {
 		if (!rightDebounce) {
 			rightDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
@@ -123,7 +122,7 @@ void KeyboardController::update() {
 		}
 	}
 	else rightDebounce = false;
-	if (Game::keyState[SDL_SCANCODE_DOWN] || Game::keyState[SDL_SCANCODE_KP_5]) {
+	if (Game::keyState[SDL_SCANCODE_DOWN] || Game::keyState[SDL_SCANCODE_KP_5] || Game::keyState[SDL_SCANCODE_J]) {
 		if (!downDebounce) {
 			downDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
@@ -133,7 +132,7 @@ void KeyboardController::update() {
 		}
 	}
 	else downDebounce = false;
-	if (Game::keyState[SDL_SCANCODE_UP] || Game::keyState[SDL_SCANCODE_KP_8]) {
+	if (Game::keyState[SDL_SCANCODE_UP] || Game::keyState[SDL_SCANCODE_KP_8] || Game::keyState[SDL_SCANCODE_K]) {
 		if (!upDebounce) {
 			upDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
