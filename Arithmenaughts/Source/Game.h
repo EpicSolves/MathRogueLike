@@ -5,17 +5,14 @@
 #include <cstdio>
 #include <vector>
 #include <map>
+#include "ECS.h"
+#include "Wave.h"
 
 #define DRAW_COLLISION_BOXES  false
 
-#define OVERWORLD_PHASE_TIMER  0*60
 #define MATH_PHASE_0_TIMER    10*60
-#define FIGHT_PHASE_0_TIMER   15*60
-#define MATH_PHASE_1_TIMER    30*60
-#define FIGHT_PHASE_1_TIMER   3*60*60
-#define MATH_PHASE_2_TIMER    30*60
-#define FIGHT_PHASE_2_TIMER   3*60*60
-#define BOSS_PHASE_TIMER       0*60
+#define MATH_PHASE_1_TIMER    10*60
+#define MATH_PHASE_2_TIMER    10*60
 
 class AssetManager;
 class ColliderComponent;
@@ -49,6 +46,9 @@ public:
 	void cleanMapTiles();
 	void removeGate();
 
+	// Spawn a wave of enemies
+	void spawnWave(Wave &wave);
+
 	static AssetManager *assets;
 	static int counter;
 	static bool isRunning;
@@ -64,12 +64,14 @@ public:
 	static bool healCD;
 	static std::map<std::string, int> spelltimers;
 	static int location;
+	static Entity& player;
+	static int enemyCount;
 
 	// Determines which phase of the game we are in
 	static enum phase_enum { OVERWORLD_PHASE, MATH_PHASE_0, FIGHT_PHASE_0, 
 	                                          MATH_PHASE_1, FIGHT_PHASE_1,
 	                                          MATH_PHASE_2, FIGHT_PHASE_2, 
-	                                         BOSS_PHASE };
+	                                          BOSS_PHASE };
 	static int phase;
 	static int phaseTimer;
 
@@ -77,6 +79,10 @@ public:
 	static int enemySpawnTimer;
 	static int enemiesKilled;
 	static int spawnRate;
+
+	// Spell and Ability cooldowns
+	static int dashDuration;
+	static bool dashCooldown;
 
 	// Powerup settings for math phase
 	static float shootSpeed;

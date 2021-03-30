@@ -16,7 +16,7 @@ public:
 
 	// Game objects
 	void CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, std::string texId, std::size_t group);
-	void SpawnEnemy(Vector2D pos, int scale, std::string texId);
+	void SpawnEnemy(Vector2D pos, float scale, float health, bool canShoot, std::string texId);
 	void PlaySound(std::string id);
 
 	// Texture management

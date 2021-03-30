@@ -70,6 +70,12 @@
     <ClInclude Include="Player.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>Source\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game.cpp">
@@ -112,6 +118,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
       <Filter>Source\ECS</Filter>
     </ClCompile>
   </ItemGroup>

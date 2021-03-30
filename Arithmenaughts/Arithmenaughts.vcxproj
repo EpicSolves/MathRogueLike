@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AIComponent.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="ColliderComponent.h" />
@@ -151,8 +152,10 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="UILabel.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="Wave.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AIComponent.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Collision.cpp" />

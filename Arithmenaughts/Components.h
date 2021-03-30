@@ -8,3 +8,4 @@
 #include "StatsComponent.h"
 #include "ProjectileComponent.h"
 #include "UILabel.h"
+#include "AIComponent.h"

@@ -47,7 +47,7 @@ public:
 			entity->addComponent<TransformComponent>();
 		transform = &entity->getComponent<TransformComponent>();
 
-		tex = TextureManager::LoadTexture("Assets/TolTex.png");
+		tex = TextureManager::LoadTexture("Assets/Textures/TolTex.png");
 		sRect = { 0, 0, 32, 32 };
 		dRect = { collider.x, collider.y, collider.w, collider.h };
 	}

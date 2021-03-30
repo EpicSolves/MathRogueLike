@@ -34,6 +34,7 @@ bool Game::eligibleB = false;
 int Game::numberAVal = 0;
 int Game::numberBVal = 0;
 int Game::counter = 0;
+int Game::enemyCount = 0;
 
 // Initialize phase to math phase and timer to 15 seconds
 int Game::phase = Game::OVERWORLD_PHASE;
@@ -48,21 +49,26 @@ std::map<std::string, int> Game::spelltimers = std::map<std::string, int>();
 // Shoot speed based on initial math settings
 float Game::shootSpeed = 5.0f;
 const uint8_t *Game::keyState = 0;
+
+// Spell and ability cooldowns
+int Game::dashDuration = 0;
+bool Game::dashCooldown = false;
  
 int Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
 int Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 
 // create a list of objects to be used in our game
-auto& player(manager.addEntity());
-auto& mana(manager.addEntity());
+Entity& Game::player = manager.addEntity();
+auto& energy(manager.addEntity());
 auto& health(manager.addEntity());
 auto& numberA(manager.addEntity());
 auto& numberB(manager.addEntity());
 auto& healSpell(manager.addEntity());
+auto& key(manager.addEntity());
 
 // Create a list of label objects
 auto& healthLabel(manager.addEntity());
-auto& manaLabel(manager.addEntity());
+auto& energyLabel(manager.addEntity());
 auto& score(manager.addEntity());
 
 // Create out groups
@@ -137,32 +143,35 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	isRunning = true;
 	
 	// Load textures
-	assets->AddTexture("NewtonsGroveOverworld_Tileset", "Assets/NewtonsGroveOverworld_Tileset.png");
-	assets->AddTexture("NewtonsGroveD0_Tileset", "Assets/NewtonsGroveD0_Tileset.png");
-	assets->AddTexture("player_idle", "Assets/player_idle.png");
-	assets->AddTexture("player_run", "Assets/player_run.png");
-	assets->AddTexture("numbers", "Assets/numbers.png");
-	assets->AddTexture("star_spin", "Assets/star_spin.png");
-	assets->AddTexture("mana", "Assets/mana.png");
-	assets->AddTexture("health", "Assets/health.png");
-	assets->AddTexture("spell_heal", "Assets/spell_heal.png");
-	assets->AddTexture("skeleton_idle", "Assets/skeleton_idle.png");
+	assets->AddTexture("NewtonsGroveOverworld_Tileset", "Assets/Textures/NewtonsGroveOverworld_Tileset.png");
+	assets->AddTexture("NewtonsGroveD0_Tileset", "Assets/Textures/NewtonsGroveD0_Tileset.png");
+	assets->AddTexture("player_idle", "Assets/Textures/player_idle.png");
+	assets->AddTexture("player_run", "Assets/Textures/player_run.png");
+	assets->AddTexture("player_dash", "Assets/Textures/player_dash.png");
+	assets->AddTexture("numbers", "Assets/Textures/numbers.png");
+	assets->AddTexture("star_spin", "Assets/Textures/star_spin.png");
+	assets->AddTexture("energy", "Assets/Textures/energy.png");
+	assets->AddTexture("health", "Assets/Textures/health.png");
+	assets->AddTexture("spell_heal", "Assets/Textures/spell_heal.png");
+	assets->AddTexture("skeleton_idle", "Assets/Textures/skeleton_idle.png");
+	assets->AddTexture("key", "Assets/Textures/key.png");
 
 	// Load fonts
-	assets->AddFont("verdana", "Assets/Verdana.ttf", 32);
+	assets->AddFont("verdana", "Assets/Fonts/Verdana.ttf", 32);
 
 	// Load sounds
-	assets->AddSound("star_shot", "Assets/star.wav");
-	assets->AddSound("enemy_hit", "Assets/enemy_hit.wav");
-	assets->AddSound("heal_cast", "Assets/heal.wav");
-	assets->AddSound("player_hit", "Assets/player_hit.wav");
-	assets->AddSound("game_over", "Assets/game_over.wav");
-	assets->AddSound("mana_up", "Assets/mana_up.wav");
-	assets->AddSound("skeleton_dead", "Assets/skeleton_dead.wav");
+	assets->AddSound("star_shot", "Assets/Sounds/star.wav");
+	assets->AddSound("enemy_hit", "Assets/Sounds/enemy_hit.wav");
+	assets->AddSound("heal_cast", "Assets/Sounds/heal.wav");
+	assets->AddSound("player_hit", "Assets/Sounds/player_hit.wav");
+	assets->AddSound("game_over", "Assets/Sounds/game_over.wav");
+	assets->AddSound("energy_up", "Assets/Sounds/energy_up.wav");
+	assets->AddSound("skeleton_dead", "Assets/Sounds/skeleton_dead.wav");
+	assets->AddSound("boss_dead", "Assets/Sounds/victory.wav");
 	
 	// Load the map
 	map = new Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
-	map->LoadMap("Assets/NewtonsGroveOverworld.map", 10, 10, "NewtonsGroveOverworld_Tileset");
+	map->LoadMap("Assets/Maps/NewtonsGroveOverworld.map", 10, 10, "NewtonsGroveOverworld_Tileset");
 
 	// Get an initial keyboard state
 	Game::keyState = SDL_GetKeyboardState(NULL);
@@ -171,8 +180,8 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	SDL_Color white = { 255, 255, 255, 200 };
 	healthLabel.addComponent<UILabel>(10, 10, "Health", "verdana", white, "health_label");
 	healthLabel.addGroup(groupUILabels);
-	manaLabel.addComponent<UILabel>(10, 50, "Mana", "verdana", white, "health_label");
-	manaLabel.addGroup(groupUILabels);
+	energyLabel.addComponent<UILabel>(10, 50, "Energy", "verdana", white, "energy_label");
+	energyLabel.addGroup(groupUILabels);
 	score.addComponent<UILabel>(10, 90, "Score: 0", "verdana", white, "score_label");
 	score.addGroup(groupUILabels);
 
@@ -181,6 +190,7 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	player.addComponent<SpriteComponent>(true, 99);
 	player.getComponent<SpriteComponent>().AddAnimation("player_idle", "player_idle", 0, 8, 100);
 	player.getComponent<SpriteComponent>().AddAnimation("player_run", "player_run", 0, 8, 100);
+	player.getComponent<SpriteComponent>().AddAnimation("player_dash", "player_dash", 0, 6, 55.555f);
 	player.getComponent<SpriteComponent>().Play("player_idle");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player", 49*2, 38*2, 27.0*2, 37.0*2, false);
@@ -192,18 +202,18 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	health.addComponent<StatsComponent>("health", 100.0f);
 	health.addGroup(groupHUD);
 
-	// Add mana bar display
-	mana.addComponent<TransformComponent>(10.0f, 55.0f, 100.0f, 10.0f, 4);
-	mana.addComponent<SpriteComponent>("mana");
-	mana.addComponent<StatsComponent>("mana", 100.0f);
-	mana.addGroup(groupHUD);
+	// Add energy bar display
+	energy.addComponent<TransformComponent>(10.0f, 55.0f, 100.0f, 10.0f, 4);
+	energy.addComponent<SpriteComponent>("energy");
+	energy.addComponent<StatsComponent>("energy", 100.0f);
+	energy.addGroup(groupHUD);
 
 	// The first digit of the number pop-up interface
 	numberA.addComponent<TransformComponent>(300, 800, 32, 32, 4);
 	numberA.addComponent<SpriteComponent>("numbers");
 	numberA.getComponent<SpriteComponent>().sRect.x = 0;
 	numberA.getComponent<SpriteComponent>().sRect.y = 0;
-	numberA.getComponent<SpriteComponent>().sRect.w = 16;
+	numberA.getComponent<SpriteComponent>().sRect.w = 32;
 	numberA.addGroup(groupHUD);
 
 	// The second digit of the number pop-up interface
@@ -211,7 +221,7 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	numberB.addComponent<SpriteComponent>("numbers");
 	numberB.getComponent<SpriteComponent>().sRect.x = 0;
 	numberB.getComponent<SpriteComponent>().sRect.y = 0;
-	numberB.getComponent<SpriteComponent>().sRect.w = 16;
+	numberB.getComponent<SpriteComponent>().sRect.w = 32;
 	numberB.addGroup(groupHUD);
 
 	// Add a spell to the bottom of the screen
@@ -220,8 +230,6 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	healSpell.addComponent<ColliderComponent>("spell");
 	Game::spelltimers["heal"] = 0;
 	healSpell.addGroup(groupHUD);
-
-
 }
 
 /**************************************************************************/
@@ -245,7 +253,7 @@ void Game::handleEvents() {
 	}
 
 	// If we are in math phase
-	if (Game::phase == Game::MATH_PHASE_0) {
+	if (Game::phase == Game::MATH_PHASE_0 || Game::phase == Game::MATH_PHASE_1 || Game::phase == Game::MATH_PHASE_2) {
 
 		// Show the num pad
 		showSolvePad();
@@ -254,7 +262,7 @@ void Game::handleEvents() {
 		if (solvedProblem()) {
 
 			// Indicate we solved it
-			Game::assets->PlaySound("mana_up");
+			Game::assets->PlaySound("energy_up");
 
 			// Increment shot speed
 			Game::shootSpeed += 0.25f;
@@ -265,7 +273,7 @@ void Game::handleEvents() {
 	} else {  // We are in a fighting mdoe
 
 		int mouseX, mouseY;
-		float mVal = mana.getComponent<StatsComponent>().getResource("mana");
+		float mVal = energy.getComponent<StatsComponent>().getResource("energy");
 
 		// Check if the user is in pad solve mode
 		if (inSolvePadMode()) {
@@ -277,10 +285,10 @@ void Game::handleEvents() {
 			if (solvedProblem()) {
 
 				// Indicate the problem was solved correctly
-				Game::assets->PlaySound("mana_up");
+				Game::assets->PlaySound("energy_up");
 
 				// Increment mana
-				mana.getComponent<StatsComponent>().setResource("mana", std::min((int)mana.getComponent<StatsComponent>().getResource("mana") + 15, 100));
+				energy.getComponent<StatsComponent>().setResource("energy", std::min((int)energy.getComponent<StatsComponent>().getResource("energy") + 15, 100));
 
 				// Generate a new problem
 				generatenewProblem();
@@ -298,7 +306,7 @@ void Game::handleEvents() {
 						float hVal = health.getComponent<StatsComponent>().getResource("health");
 						hVal += 35;
 						health.getComponent<StatsComponent>().setResource("health", std::min(100.0f, hVal));
-						mana.getComponent<StatsComponent>().setResource("mana", std::max(0.0f, mVal - 10.0f));
+						energy.getComponent<StatsComponent>().setResource("energy", std::max(0.0f, mVal - 10.0f));
 						Game::spelltimers["heal"] = 180;
 					}
 				}
@@ -320,7 +328,6 @@ void Game::update() {
 			Game::phase = Game::MATH_PHASE_0;
 			Game::phaseTimer = MATH_PHASE_0_TIMER;
 			Game::location = 1;
-			printf("Hello\n");
 
 			// Clean it up
 			free(map);
@@ -330,7 +337,7 @@ void Game::update() {
 			Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
 			Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 			map = new Map("NewtonsGroveD0_Tileset", MAP_SCALE, TILE_SIZE);
-			map->LoadMap("Assets/NewtonsGroveD0.map", 10, 10, "NewtonsGroveD0_Tileset");
+			map->LoadMap("Assets/Maps/NewtonsGroveD0.map", 10, 10, "NewtonsGroveD0_Tileset");
 			player.getComponent<TransformComponent>().position.x = 64;
 			player.getComponent<ColliderComponent>().update();
 			
@@ -371,7 +378,7 @@ void Game::update() {
 			Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
 			Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 			map = new Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
-			map->LoadMap("Assets/NewtonsGroveOverworld.map", 10, 10, "NewtonsGroveOverworld_Tileset");
+			map->LoadMap("Assets/Maps/NewtonsGroveOverworld.map", 10, 10, "NewtonsGroveOverworld_Tileset");
 			player.getComponent<TransformComponent>().position.x = 1000;
 			player.getComponent<ColliderComponent>().update();
 			Game::location = 0;
@@ -381,43 +388,59 @@ void Game::update() {
 		Game::phaseTimer--;
 		if (Game::phaseTimer <= 0) {
 			Game::phase = Game::FIGHT_PHASE_0;
-			Game::phaseTimer = FIGHT_PHASE_0_TIMER;
+
+			// Create wave
+			Wave w = Wave(0, 0, 3, 3, 2, 100.0f, true);
+			spawnWave(w);
 		}
 	}
 	else if (Game::phase == Game::FIGHT_PHASE_0) {
+
+		if (Game::enemyCount == 0) {
+			Game::phase = Game::MATH_PHASE_1;
+			Game::phaseTimer = MATH_PHASE_1_TIMER;
+		}
+	}
+	else if (Game::phase == Game::MATH_PHASE_1) {
 		Game::phaseTimer--;
 		if (Game::phaseTimer <= 0) {
-			removeGate();
+			Game::phase = Game::FIGHT_PHASE_1;
+
+			// 2 enemies per side
+			Wave w = Wave(3, 3, 0, 0, 2, 100.0f, true);
+			spawnWave(w);
+		}
+	}
+	else if (Game::phase == Game::FIGHT_PHASE_1) {
+
+		if (Game::enemyCount == 0) {
+			Game::phase = Game::MATH_PHASE_2;
+			Game::phaseTimer = MATH_PHASE_2_TIMER;
+		}
+	}
+	else if (Game::phase == Game::MATH_PHASE_2) {
+		Game::phaseTimer--;
+		if (Game::phaseTimer <= 0) {
+			Game::phase = Game::FIGHT_PHASE_2;
+			Wave w = Wave(3, 3, 3, 3, 2, 100.0f, true);
+			spawnWave(w);
+		}
+	}
+	else if (Game::phase == Game::FIGHT_PHASE_2) {
+
+		if (Game::enemyCount == 0) {
+			Game::phase = Game::BOSS_PHASE;
+			Wave w = Wave(1, 0, 0, 0, 5, 1000.0f, true);
+			spawnWave(w);
+			w = Wave(5, 5, 5, 5, 1, 1.0f, false);
+			spawnWave(w);
+		}
+	}
+	else if (Game::phase == Game::BOSS_PHASE) {
+		if (Game::enemyCount == 0) {
+			assets->PlaySound("boss_dead");
 			Game::phase = Game::OVERWORLD_PHASE;
-		}
-		Game::counter++;
-		if (Game::counter >= 180) {
-			int enemyX, enemyY, playerX, playerY;
-			for (auto& e : enemies) {
-
-				enemyX = e->getComponent<TransformComponent>().position.x + 15.0f;
-				enemyY = e->getComponent<TransformComponent>().position.y + 15.0f;
-
-				playerX = player.getComponent<TransformComponent>().position.x + 58 * player.getComponent<TransformComponent>().scale;
-				playerY = player.getComponent<TransformComponent>().position.y + 52 * player.getComponent<TransformComponent>().scale;
-
-				// Calculate x and y velocity
-				float xDist = playerX - enemyX;
-				float yDist = enemyY - playerY;
-				float angle = std::atan2(yDist, xDist);
-				float xVel = std::cos(angle);
-				float yVel = std::sin(angle);
-
-				// Create a little explosion to start the game	
-				assets->CreateProjectile(Vector2D(enemyX, enemyY), Vector2D(xVel, -yVel), 600, 4, "star", groupEnemyProjectiles);
-
-			}
-			Game::counter = 0;
-		}
-		Game::enemySpawnTimer = std::max(0, Game::enemySpawnTimer - 1);
-		if (Game::enemySpawnTimer == 0) {
-			Game::assets->SpawnEnemy(Vector2D(rand() % 10 * 32 * MAP_SCALE, rand() % 10 * 32 * MAP_SCALE), 2, "player");
-			Game::enemySpawnTimer = Game::spawnRate -= 2;
+			//removeGate();
 		}
 	}
 
@@ -428,7 +451,6 @@ void Game::update() {
 
 	manager.refresh();
 	manager.update();
-
 
 	// Ensure if player hits wall, he goes back to where he was
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
@@ -442,6 +464,11 @@ void Game::update() {
 			player.getComponent<TransformComponent>().position.y = playerPos.y + 0.01f;
 			player.getComponent<ColliderComponent>().update();
 			playerCol = player.getComponent<ColliderComponent>().collider;
+
+			if (Game::hasKey) {
+				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
+					removeGate();
+			}
 		}
 
 		// Check if left of player hit right of box
@@ -449,6 +476,11 @@ void Game::update() {
 			player.getComponent<TransformComponent>().position.x = playerPos.x + 0.01f;
 			player.getComponent<ColliderComponent>().update();
 			playerCol = player.getComponent<ColliderComponent>().collider;
+
+			if (Game::hasKey) {
+				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
+					removeGate();
+			}
 		}
 
 		// Check if right of player hit left of box
@@ -456,6 +488,11 @@ void Game::update() {
 			player.getComponent<TransformComponent>().position.x = playerPos.x - 0.01f;
 			player.getComponent<ColliderComponent>().update();
 			playerCol = player.getComponent<ColliderComponent>().collider;
+
+			if (Game::hasKey) {
+				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
+					removeGate();
+			}
 		}
 
 		// Check if bottom of player hit top of box
@@ -463,6 +500,11 @@ void Game::update() {
 			player.getComponent<TransformComponent>().position.y = playerPos.y - 0.01f;
 			player.getComponent<ColliderComponent>().update();
 			playerCol = player.getComponent<ColliderComponent>().collider;
+
+			if (Game::hasKey) {
+				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
+					removeGate();
+			}
 		}
 	}
 	
@@ -477,6 +519,14 @@ void Game::update() {
 
 					// Enemy was killed
 					e->destroy();
+					Game::enemyCount--;
+					if (Game::enemyCount == 0 && Game::phase == BOSS_PHASE) {
+						key.addComponent<TransformComponent>(e->getComponent<ColliderComponent>().collider.x,
+							e->getComponent<ColliderComponent>().collider.y, 32, 32, 4);
+						key.addComponent<SpriteComponent>("key");
+						key.addComponent<ColliderComponent>("key", 30, 30, 60, 60, false);
+						key.addGroup(groupCollectibles);
+					}
 			
 					// increment score
 					Game::enemiesKilled++;
@@ -518,6 +568,13 @@ void Game::update() {
 			}
 		}
 	}
+
+	// If player hits collectible
+	for (auto& c : collectibles) {
+		if (Collision::AABB(Game::player.getComponent<ColliderComponent>().collider, c->getComponent<ColliderComponent>().collider)) {
+			Game::hasKey = true;
+		}
+	}
 	
 	camera.x = std::max(0.0f, playerPos.x - 400);
 	camera.y = std::max(0.0f, playerPos.y - 320);
@@ -528,14 +585,19 @@ void Game::update() {
 	health.getComponent<TransformComponent>().position.x = camera.x + 10.0;
 	health.getComponent<TransformComponent>().position.y = camera.y + 10.0;
 
-	// Keep mana bar in top left of view
-	mana.getComponent<TransformComponent>().position.x = camera.x + 10.0;
-	mana.getComponent<TransformComponent>().position.y = camera.y + 50.0;
+	// Keep energy bar in top left of view
+	energy.getComponent<TransformComponent>().position.x = camera.x + 10.0;
+	energy.getComponent<TransformComponent>().position.y = camera.y + 50.0;
 
 	// Keep spells on bottom
 	healSpell.getComponent<TransformComponent>().position.x = camera.x + camera.w / 2 - healSpell.getComponent<TransformComponent>().width*healSpell.getComponent<TransformComponent>().scale / 2;
 	healSpell.getComponent<TransformComponent>().position.y = camera.y + camera.h - healSpell.getComponent<TransformComponent>().height*healSpell.getComponent<TransformComponent>().scale - 10.0f;
 	
+	// If we have key, hold it
+	if (Game::hasKey) {
+		key.getComponent<TransformComponent>().position.x = Game::player.getComponent<ColliderComponent>().collider.x;
+		key.getComponent<TransformComponent>().position.y = Game::player.getComponent<ColliderComponent>().collider.y;
+	}
 	// Check spell CDs
 	if (Game::spelltimers["heal"] == 0) {
 		healSpell.getComponent<SpriteComponent>().sRect.x = 0;
@@ -568,10 +630,10 @@ void Game::render() {
 
 // Show / hide number pad, check if user solved proble, generate a new problem
 void Game::showSolvePad() {
-	numberA.getComponent<SpriteComponent>().sRect.x = 16 * Game::numberAVal;
-	numberB.getComponent<SpriteComponent>().sRect.x = 16 * Game::numberBVal;
+	numberA.getComponent<SpriteComponent>().sRect.x = 32 * Game::numberAVal;
+	numberB.getComponent<SpriteComponent>().sRect.x = 32 * Game::numberBVal;
 	numberA.getComponent<TransformComponent>().position.x = camera.x + 200;
-	numberB.getComponent<TransformComponent>().position.x = camera.x + 300;
+	numberB.getComponent<TransformComponent>().position.x = camera.x + 350;
 	numberA.getComponent<TransformComponent>().position.y = camera.y + camera.h - 200;
 	numberB.getComponent<TransformComponent>().position.y = camera.y + camera.h - 200;
 }
@@ -612,4 +674,22 @@ void Game::removeGate() {
 	for (auto& tile : extraMapTiles) {
 		tile->destroy();
 	}
+}
+
+void Game::spawnWave(Wave &wave) {
+	// Spawn enemies from right
+	for (int i = 0; i < wave.rightEnemies; i++)
+		Game::assets->SpawnEnemy(Vector2D(11 * 32 * MAP_SCALE, rand() % 10 * 32 * MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+
+	// Spawn enemies from the left
+	for (int i = 0; i < wave.leftEnemies; i++)
+		Game::assets->SpawnEnemy(Vector2D(-1 * 32 * MAP_SCALE, rand() % 10 * 32 * MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+
+	// Spawn from top
+	for (int i = 0; i < wave.topEnemies; i++)
+		Game::assets->SpawnEnemy(Vector2D(rand() % 10 * 32 * MAP_SCALE, -1 * 32 * MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+
+	// Spawn from bottom
+	for (int i = 0; i < wave.bottomEnemies; i++)
+		Game::assets->SpawnEnemy(Vector2D(rand() % 10 * 32 * MAP_SCALE, 11 * 32 * MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
 }

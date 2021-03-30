@@ -20,14 +20,18 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 	// test
 }
 
-void AssetManager::SpawnEnemy(Vector2D pos, int scale, std::string texId) {
+void AssetManager::SpawnEnemy(Vector2D pos, float scale, float health, bool canShoot, std::string texId) {
 	auto& enemy(manager->addEntity());
 	enemy.addComponent<TransformComponent>(pos.x, pos.y, 24, 32, scale);
 	enemy.addComponent<SpriteComponent>(true, 0);
-	enemy.getComponent<SpriteComponent>().AddAnimation("skeleton_idle", "skeleton_idle", 0, 11, 100);
+	enemy.getComponent<SpriteComponent>().AddAnimation(texId, texId, 0, 11, 100);
 	enemy.getComponent<SpriteComponent>().Play("skeleton_idle");
 	enemy.addComponent<ColliderComponent>("enemy", 0, 0, 24*scale, 32*scale, false);
+	enemy.getComponent<ColliderComponent>().health = health;
+	enemy.addComponent<AIComponent>(canShoot);
 	enemy.addGroup(Game::groupEnemies);
+
+	Game::enemyCount++;
 }
 
 void AssetManager::PlaySound(std::string id) {
