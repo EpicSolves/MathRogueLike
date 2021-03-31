@@ -1,5 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
+#include "TextureManager.h"
+#include "ClassList.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include <cstdio>
@@ -7,15 +9,13 @@
 #include <map>
 #include "ECS.h"
 #include "Wave.h"
+#include "Hero.h"
 
 #define DRAW_COLLISION_BOXES  false
 
 #define MATH_PHASE_0_TIMER    10*60
 #define MATH_PHASE_1_TIMER    10*60
 #define MATH_PHASE_2_TIMER    10*60
-
-class AssetManager;
-class ColliderComponent;
 
 class Game {
 
@@ -49,6 +49,7 @@ public:
 	// Spawn a wave of enemies
 	void spawnWave(Wave &wave);
 
+	static Manager manager;
 	static AssetManager *assets;
 	static int counter;
 	static bool isRunning;
@@ -66,6 +67,7 @@ public:
 	static int location;
 	static Entity& player;
 	static int enemyCount;
+	static Hero hero;
 
 	// Determines which phase of the game we are in
 	static enum phase_enum { OVERWORLD_PHASE, MATH_PHASE_0, FIGHT_PHASE_0, 

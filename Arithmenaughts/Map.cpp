@@ -5,8 +5,6 @@
 #include "ECS.h"
 #include "Components.h"
 
-extern Manager manager;
-
 Map::Map(std::string tid, int ms, int ts) : texId(tid), mapScale(ms), tileSize(ts) {
 	scaledSize = ms * ts;
 }
@@ -37,7 +35,7 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY, std::string tileset) {
 		for (int x = 0; x < sizeX; x++) {
 			mapFile.get(c);
 			if (c == '1') {
-				auto& tcol(manager.addEntity());
+				auto& tcol(Game::manager.addEntity());
 				tcol.addComponent<ColliderComponent>(tileset, x*scaledSize, y*scaledSize, scaledSize, true);				
 				tcol.addGroup(Game::groupMapColliders);
 			}
@@ -49,7 +47,7 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY, std::string tileset) {
 
 
 void Map::AddTile(int srcX, int srcY, int xPos, int yPos) {
-	auto& tile(manager.addEntity());
+	auto& tile(Game::manager.addEntity());
 	tile.addComponent<TileComponent>(srcX, srcY, xPos, yPos, tileSize, mapScale, texId);
 	tile.addGroup(Game::groupMap);
 }

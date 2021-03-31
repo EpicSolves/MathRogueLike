@@ -135,6 +135,7 @@
     <ClInclude Include="AIComponent.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="ClassList.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Components.h" />
@@ -142,7 +143,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Hero.h" />
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="StatsComponent.h" />
     <ClInclude Include="TileComponent.h" />
@@ -158,11 +159,14 @@
     <ClCompile Include="AIComponent.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />

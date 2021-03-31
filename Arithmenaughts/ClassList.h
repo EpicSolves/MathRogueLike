@@ -1,0 +1,21 @@
+#pragma once
+
+class AIComponent;
+class Animation;
+class ColliderComponent;
+class Manager;
+class KeyboardController;
+class ProjectileComponent;
+class SpriteComponent;
+class StatsComponent;
+class TileComponent;
+class TransformComponent;
+class Hero;
+class UILabel;
+class AssetManager;
+class Collision;
+class Game;
+class Map;
+class TextureManager;
+class Vector2D;
+class TextureManager;

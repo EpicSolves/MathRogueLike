@@ -8,10 +8,11 @@
 #include "Components.h"
 #include "SDL_ttf.h"
 #include "SDL_mixer.h"
+#include "Game.h"
 
 class AssetManager {
 public:
-	AssetManager(Manager *man);
+	AssetManager();
 	~AssetManager();
 
 	// Game objects

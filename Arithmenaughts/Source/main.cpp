@@ -1,4 +1,6 @@
+#include "ClassList.h"
 #include "Game.h"
+class Manager;
 
 Game *game = nullptr;
 

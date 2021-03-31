@@ -15,15 +15,15 @@ void SpriteComponent::update() {
 
 	// If we are animated, set source rect to current frame
 	if (animated) {
-		// sRect.x = sRect.w * static_cast<int>((SDL_GetTicks() / speed) % this->frames);
-		Uint32	currentRender = SDL_GetTicks();
-		if ((currentRender - lastRender) >= speed) {
-			currentFrame = (currentFrame + 1) % this->frames;
-			lastRender = currentRender;
+		if (!isGear) {
+			Uint32	currentRender = SDL_GetTicks();
+			if ((currentRender - lastRender) >= speed) {
+				currentFrame = (currentFrame + 1) % this->frames;
+				lastRender = currentRender;
+			}
 		}
 		sRect.x = sRect.w * currentFrame;
 		sRect.y = animIndex * transform->height;
-		
 	}
 	
 	dRect.x = static_cast<int>(transform->position.x) - Game::camera.x;

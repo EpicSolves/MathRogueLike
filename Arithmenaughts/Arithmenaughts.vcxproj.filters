@@ -67,13 +67,16 @@
     <ClInclude Include="UILabel.h">
       <Filter>Source\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="AIComponent.h">
       <Filter>Source\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Wave.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassList.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -121,6 +124,15 @@
       <Filter>Source\ECS</Filter>
     </ClCompile>
     <ClCompile Include="AIComponent.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileComponent.cpp">
       <Filter>Source\ECS</Filter>
     </ClCompile>
   </ItemGroup>

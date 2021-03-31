@@ -1,79 +1,72 @@
 ﻿  Game.cpp
-d:\dev\arithmenaughts\arithmenaughts\source\game.h(74): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\transformcomponent.h(5): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
+  d:\dev\arithmenaughts\arithmenaughts\transformcomponent.h(5): note: see declaration of 'TransformComponent'
+d:\dev\arithmenaughts\arithmenaughts\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
+  d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
 d:\dev\arithmenaughts\arithmenaughts\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
   d:\dev\arithmenaughts\arithmenaughts\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(100): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(193): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(291): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\collidercomponent.h(19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.h(76): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(106): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(296): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(275): warning C4101: 'mouseX': unreferenced local variable
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(275): warning C4101: 'mouseY': unreferenced local variable
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(463): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(475): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(487): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(499): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(516): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(579): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(280): warning C4101: 'mouseX': unreferenced local variable
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(280): warning C4101: 'mouseY': unreferenced local variable
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(473): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(485): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(497): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(509): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(526): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(590): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(580): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(591): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(585): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(586): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(589): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(590): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(593): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(598): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(599): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(635): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(636): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(637): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(638): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(685): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(689): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(693): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(596): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(597): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(600): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(601): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(604): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(609): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(610): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(647): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(648): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(649): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(650): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(697): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(701): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(705): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(709): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(205): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float,float,float,float,int>(float &&,float &&,float &&,float &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
 d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(189): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
-          with
-          [
-              T=TransformComponent
-          ]
-d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=double
-          ]
-  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(196): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[7],int,int,double,double,bool>(const char (&)[7],int &&,int &&,double &&,double &&,bool &&)' being compiled
-          with
-          [
-              T=ColliderComponent
-          ]
-d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(200): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float,float,float,float,int>(float &&,float &&,float &&,float &&,int &&)' being compiled
+  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(217): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
           with
           [
               T=TransformComponent
           ]
 d:\dev\arithmenaughts\arithmenaughts\ecs.h(79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(525): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int&,int&,int,int,int>(int &,int &,int &&,int &&,int &&)' being compiled
+  d:\dev\arithmenaughts\arithmenaughts\source\game.cpp(535): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int&,int&,int,int,int>(int &,int &,int &&,int &&,int &&)' being compiled
           with
           [
               T=TransformComponent

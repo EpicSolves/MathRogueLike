@@ -22,13 +22,14 @@ private:
 	int speed = 100; // time between frame in ms
 	std::map<std::string, Animation> animations;
 	int ID = -1;
-	int currentFrame = 0;
 	Uint32 lastRender = 0;
 	std::string currentAId = "";
 
 public:
+	bool isGear = false;
 	bool isText = false;
 	int animIndex = 0;
+	int currentFrame = 0;
 	SDL_Rect sRect, dRect;
 	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 

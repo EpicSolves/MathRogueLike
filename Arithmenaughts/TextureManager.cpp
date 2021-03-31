@@ -2,6 +2,9 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
+TextureManager::TextureManager() {}
+TextureManager::~TextureManager() {}
+
 SDL_Texture *TextureManager::LoadTexture(const char *fileName) {
 
 	SDL_Surface *tempSurface = IMG_Load(fileName);

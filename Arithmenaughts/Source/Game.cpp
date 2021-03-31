@@ -9,7 +9,7 @@
 #include <cmath>
 #include <ctime>
 #include "SDL_ttf.h"
-
+#include "ECS.h"
 
 #define RADTODEG(R)((180.0 * R) / PI)
 #define PI 3.14159
@@ -18,7 +18,7 @@
 #define TILE_SIZE 32
 
 Map *map;
-Manager manager;
+Manager Game::manager;
 
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -27,7 +27,7 @@ bool Game::isRunning = false;
 bool Game::hasKey = false;
 int Game::enemiesKilled = 0;
 SDL_Rect Game::camera = { 0, 0, 1024, 768 };
-AssetManager* Game::assets = new AssetManager(&manager);
+AssetManager* Game::assets = new AssetManager();
 
 bool Game::eligibleA = false;
 bool Game::eligibleB = false;
@@ -58,32 +58,38 @@ int Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
 int Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 
 // create a list of objects to be used in our game
-Entity& Game::player = manager.addEntity();
-auto& energy(manager.addEntity());
-auto& health(manager.addEntity());
-auto& numberA(manager.addEntity());
-auto& numberB(manager.addEntity());
-auto& healSpell(manager.addEntity());
-auto& key(manager.addEntity());
+// Entity& Game::player = Game::manager.addEntity();
+// Player p = Player();
+//Entity &Game::player = Player::player;
+//Entity &Hero::hero = Game::manager.addEntity();
+Hero Game::hero = Hero();
+auto& weapon(Game::manager.addEntity());
+auto& energy(Game::manager.addEntity());
+auto& health(Game::manager.addEntity());
+auto& numberA(Game::manager.addEntity());
+auto& numberB(Game::manager.addEntity());
+auto& healSpell(Game::manager.addEntity());
+auto& key(Game::manager.addEntity());
 
 // Create a list of label objects
-auto& healthLabel(manager.addEntity());
-auto& energyLabel(manager.addEntity());
-auto& score(manager.addEntity());
+auto& healthLabel(Game::manager.addEntity());
+auto& energyLabel(Game::manager.addEntity());
+auto& score(Game::manager.addEntity());
+auto& strengthLabel(Game::manager.addEntity());
 
 // Create out groups
-auto& players(manager.getGroup(Game::groupPlayers));
-auto& miscs(manager.getGroup(Game::groupMisc));
-auto& enemies(manager.getGroup(Game::groupEnemies));
-auto& headsUpDisplay(manager.getGroup(Game::groupHUD));
-auto& enemyProjectiles(manager.getGroup(Game::groupEnemyProjectiles));
-auto& playerProjectiles(manager.getGroup(Game::groupPlayerProjectiles));
-auto& collectibles(manager.getGroup(Game::groupCollectibles));
-auto& colliders(manager.getGroup(Game::groupColliders));
-auto& UILabels(manager.getGroup(Game::groupUILabels));
-auto& mapTiles(manager.getGroup(Game::groupMap));
-auto& mapColliders(manager.getGroup(Game::groupMapColliders));
-auto& extraMapTiles(manager.getGroup(Game::groupExtraMapTiles));
+auto& players(Game::manager.getGroup(Game::groupPlayers));
+auto& miscs(Game::manager.getGroup(Game::groupMisc));
+auto& enemies(Game::manager.getGroup(Game::groupEnemies));
+auto& headsUpDisplay(Game::manager.getGroup(Game::groupHUD));
+auto& enemyProjectiles(Game::manager.getGroup(Game::groupEnemyProjectiles));
+auto& playerProjectiles(Game::manager.getGroup(Game::groupPlayerProjectiles));
+auto& collectibles(Game::manager.getGroup(Game::groupCollectibles));
+auto& colliders(Game::manager.getGroup(Game::groupColliders));
+auto& UILabels(Game::manager.getGroup(Game::groupUILabels));
+auto& mapTiles(Game::manager.getGroup(Game::groupMap));
+auto& mapColliders(Game::manager.getGroup(Game::groupMapColliders));
+auto& extraMapTiles(Game::manager.getGroup(Game::groupExtraMapTiles));
 
 // Game constructor/deconstructor defaults
 Game::Game() {}
@@ -145,7 +151,7 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	// Load textures
 	assets->AddTexture("NewtonsGroveOverworld_Tileset", "Assets/Textures/NewtonsGroveOverworld_Tileset.png");
 	assets->AddTexture("NewtonsGroveD0_Tileset", "Assets/Textures/NewtonsGroveD0_Tileset.png");
-	assets->AddTexture("player_idle", "Assets/Textures/player_idle.png");
+	//assets->AddTexture("player_idle", "Assets/Textures/player_idle.png");
 	assets->AddTexture("player_run", "Assets/Textures/player_run.png");
 	assets->AddTexture("player_dash", "Assets/Textures/player_dash.png");
 	assets->AddTexture("numbers", "Assets/Textures/numbers.png");
@@ -155,6 +161,10 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	assets->AddTexture("spell_heal", "Assets/Textures/spell_heal.png");
 	assets->AddTexture("skeleton_idle", "Assets/Textures/skeleton_idle.png");
 	assets->AddTexture("key", "Assets/Textures/key.png");
+	assets->AddTexture("gold_bow", "Assets/Textures/gold_bow.png");
+	assets->AddTexture("player_idle_base", "Assets/Textures/PlayerIdleBase.png");
+	assets->AddTexture("player_idle_bow_brown", "Assets/Textures/PlayerIdleBowBrown.png");
+	assets->AddTexture("player_idle_bow_purple", "Assets/Textures/PlayerIdleBowPurple.png");
 
 	// Load fonts
 	assets->AddFont("verdana", "Assets/Fonts/Verdana.ttf", 32);
@@ -184,17 +194,12 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	energyLabel.addGroup(groupUILabels);
 	score.addComponent<UILabel>(10, 90, "Score: 0", "verdana", white, "score_label");
 	score.addGroup(groupUILabels);
+	strengthLabel.addComponent<UILabel>(10, camera.h-100, "Strength: 5", "verdana", white, "strength_label");
+	strengthLabel.addGroup(groupUILabels);
 
 	// Add components to our player
-	player.addComponent<TransformComponent>(500, 500, 128, 128, 2);
-	player.addComponent<SpriteComponent>(true, 99);
-	player.getComponent<SpriteComponent>().AddAnimation("player_idle", "player_idle", 0, 8, 100);
-	player.getComponent<SpriteComponent>().AddAnimation("player_run", "player_run", 0, 8, 100);
-	player.getComponent<SpriteComponent>().AddAnimation("player_dash", "player_dash", 0, 6, 55.555f);
-	player.getComponent<SpriteComponent>().Play("player_idle");
-	player.addComponent<KeyboardController>();
-	player.addComponent<ColliderComponent>("Player", 49*2, 38*2, 27.0*2, 37.0*2, false);
-	player.addGroup(groupPlayers);
+	Game::hero.init();
+	Game::hero.addBow();
 
 	// Add health bar display
 	health.addComponent<TransformComponent>(10.0f, 10.0f, 100.0f, 10.0f, 4);
@@ -324,7 +329,7 @@ void Game::update() {
 	if (Game::location == 0) {
 		// Check if the user entered a dungeon
 
-		if (player.getComponent<ColliderComponent>().collider.x > Map::mapWidth) {
+		if (Game::hero.collider->collider.x > Map::mapWidth) {
 			Game::phase = Game::MATH_PHASE_0;
 			Game::phaseTimer = MATH_PHASE_0_TIMER;
 			Game::location = 1;
@@ -338,11 +343,11 @@ void Game::update() {
 			Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 			map = new Map("NewtonsGroveD0_Tileset", MAP_SCALE, TILE_SIZE);
 			map->LoadMap("Assets/Maps/NewtonsGroveD0.map", 10, 10, "NewtonsGroveD0_Tileset");
-			player.getComponent<TransformComponent>().position.x = 64;
-			player.getComponent<ColliderComponent>().update();
+			Game::hero.transform->position.x = 64;
+			Game::hero.collider->update();
 			
 			// Shut the gate
-			auto& newTile(manager.addEntity());
+			auto& newTile(Game::manager.addEntity());
 			newTile.addComponent<TransformComponent>(0, 6 * TILE_SIZE* MAP_SCALE, TILE_SIZE, TILE_SIZE, MAP_SCALE);
 			newTile.addComponent<SpriteComponent>("NewtonsGroveD0_Tileset");
 			
@@ -350,12 +355,12 @@ void Game::update() {
 			newTile.getComponent<SpriteComponent>().sRect.y = 32;
 			newTile.addGroup(groupExtraMapTiles);
 
-			auto& gateACollider(manager.addEntity());
+			auto& gateACollider(Game::manager.addEntity());
 			gateACollider.addComponent<ColliderComponent>("GateA", 0, 6 * TILE_SIZE*MAP_SCALE, 32 * MAP_SCALE, true);
 			gateACollider.addGroup(groupMapColliders);
 
 			// Shut the gate
-			auto& newTile2(manager.addEntity());
+			auto& newTile2(Game::manager.addEntity());
 			newTile2.addComponent<TransformComponent>(0, 7 * TILE_SIZE* MAP_SCALE, TILE_SIZE, TILE_SIZE, MAP_SCALE);
 			newTile2.addComponent<SpriteComponent>("NewtonsGroveD0_Tileset");
 			newTile2.getComponent<SpriteComponent>().sRect.x = 0 * 32;
@@ -363,13 +368,13 @@ void Game::update() {
 			// newTile2.addComponent<ColliderComponent>("GateB", 0, 7 * TILE_SIZE* MAP_SCALE, 32 * MAP_SCALE, false);
 			newTile2.addGroup(groupExtraMapTiles);
 
-			auto& gateBCollider(manager.addEntity());
+			auto& gateBCollider(Game::manager.addEntity());
 			gateBCollider.addComponent<ColliderComponent>("GateB", 0, 7 * TILE_SIZE*MAP_SCALE, 32 * MAP_SCALE, true);
 			gateBCollider.addGroup(groupMapColliders);
 		}
 	}
 	else if (Game::location == 1) {
-		if (player.getComponent<ColliderComponent>().collider.x < -50) {
+		if (Game::hero.collider->collider.x < -50) {
 			// Clean it up
 			free(map);
 			cleanMapTiles();
@@ -379,8 +384,8 @@ void Game::update() {
 			Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 			map = new Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
 			map->LoadMap("Assets/Maps/NewtonsGroveOverworld.map", 10, 10, "NewtonsGroveOverworld_Tileset");
-			player.getComponent<TransformComponent>().position.x = 1000;
-			player.getComponent<ColliderComponent>().update();
+			Game::hero.transform->position.x = 1000;
+			Game::hero.collider->update();
 			Game::location = 0;
 		}
 	}
@@ -447,13 +452,18 @@ void Game::update() {
 	Game::spelltimers["heal"] = std::max(0, Game::spelltimers["heal"] - 1);
 
 	// Keep record of players current position to handle collision after the update
-	Vector2D playerPos = player.getComponent<TransformComponent>().position;
+	Vector2D playerPos = Game::hero.transform->position;
 
-	manager.refresh();
-	manager.update();
+	// Have to make sure animation index of bow is same as body
+	Game::hero.bowTransform->position = playerPos;
+	Game::hero.bowSprite->currentFrame = Game::hero.sprite->currentFrame;
+	printf("%d %d\n", Game::hero.sprite->currentFrame, Game::hero.bowSprite->currentFrame);
+
+	Game::manager.refresh();
+	Game::manager.update();
 
 	// Ensure if player hits wall, he goes back to where he was
-	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
+	SDL_Rect playerCol = Game::hero.collider->collider;
 	for (auto& c : mapColliders) {
 		
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
@@ -461,9 +471,9 @@ void Game::update() {
 		// If there was a collision, see which bound collider
 		// Check if top of player hit bottom of box
 		if (Collision::ABB(Vector2D(playerCol.x + 10, playerCol.y), cCol)) {
-			player.getComponent<TransformComponent>().position.y = playerPos.y + 0.01f;
-			player.getComponent<ColliderComponent>().update();
-			playerCol = player.getComponent<ColliderComponent>().collider;
+			Game::hero.transform->position.y = playerPos.y + 0.01f;
+			Game::hero.collider->update();
+			playerCol = Game::hero.collider->collider;
 
 			if (Game::hasKey) {
 				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
@@ -473,9 +483,9 @@ void Game::update() {
 
 		// Check if left of player hit right of box
 		if (Collision::ABB(Vector2D(playerCol.x, playerCol.y+10), cCol)) {
-			player.getComponent<TransformComponent>().position.x = playerPos.x + 0.01f;
-			player.getComponent<ColliderComponent>().update();
-			playerCol = player.getComponent<ColliderComponent>().collider;
+			Game::hero.transform->position.x = playerPos.x + 0.01f;
+			Game::hero.collider->update();
+			playerCol = Game::hero.collider->collider;
 
 			if (Game::hasKey) {
 				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
@@ -485,9 +495,9 @@ void Game::update() {
 
 		// Check if right of player hit left of box
 		if (Collision::ABB(Vector2D(playerCol.x + playerCol.w, playerCol.y + 10), cCol)) {
-			player.getComponent<TransformComponent>().position.x = playerPos.x - 0.01f;
-			player.getComponent<ColliderComponent>().update();
-			playerCol = player.getComponent<ColliderComponent>().collider;
+			Game::hero.transform->position.x = playerPos.x - 0.01f;
+			Game::hero.collider->update();
+			playerCol = Game::hero.collider->collider;
 
 			if (Game::hasKey) {
 				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
@@ -497,9 +507,9 @@ void Game::update() {
 
 		// Check if bottom of player hit top of box
 		if (Collision::ABB(Vector2D(playerCol.x + 10, playerCol.y + playerCol.h), cCol)) {
-			player.getComponent<TransformComponent>().position.y = playerPos.y - 0.01f;
-			player.getComponent<ColliderComponent>().update();
-			playerCol = player.getComponent<ColliderComponent>().collider;
+			Game::hero.transform->position.y = playerPos.y - 0.01f;
+			Game::hero.collider->update();
+			playerCol = Game::hero.collider->collider;
 
 			if (Game::hasKey) {
 				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
@@ -522,9 +532,9 @@ void Game::update() {
 					Game::enemyCount--;
 					if (Game::enemyCount == 0 && Game::phase == BOSS_PHASE) {
 						key.addComponent<TransformComponent>(e->getComponent<ColliderComponent>().collider.x,
-							e->getComponent<ColliderComponent>().collider.y, 32, 32, 4);
-						key.addComponent<SpriteComponent>("key");
-						key.addComponent<ColliderComponent>("key", 30, 30, 60, 60, false);
+							e->getComponent<ColliderComponent>().collider.y, 128, 128, 2);
+						key.addComponent<SpriteComponent>("player_idle_bow_purple");
+						key.addComponent<ColliderComponent>("player_idle_bow_purple", 30, 30, 60, 60, false);
 						key.addGroup(groupCollectibles);
 					}
 			
@@ -535,7 +545,7 @@ void Game::update() {
 							l->destroy();
 					}
 
-					auto& newScore(manager.addEntity());
+					auto& newScore(Game::manager.addEntity());
 					SDL_Color white = { 255, 255, 255, 200 };
 					std::string scoreStr = "Score: " + std::to_string(Game::enemiesKilled);
 					newScore.addComponent<UILabel>(10, 90, scoreStr, "verdana", white, "score_label");
@@ -553,15 +563,15 @@ void Game::update() {
 	// If enemy hit player
 	for (auto& p : enemyProjectiles) {
 		
-		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider)) {
+		if (Collision::AABB(Game::hero.collider->collider, p->getComponent<ColliderComponent>().collider)) {
 			p->destroy();
 			Game::assets->PlaySound("player_hit");
 			float hVal = health.getComponent<StatsComponent>().getResource("health");
 			health.getComponent<StatsComponent>().setResource("health", hVal - 20.0f);
 			if (health.getComponent<StatsComponent>().getResource("health") <= 0) {
 				Game::assets->PlaySound("game_over");
-				player.getComponent<TransformComponent>().position.x = 800*MAP_SCALE;
-				player.getComponent<TransformComponent>().position.y = 600*MAP_SCALE;
+				Game::hero.transform->position.x = 800*MAP_SCALE;
+				Game::hero.transform->position.y = 600*MAP_SCALE;
 				health.getComponent<StatsComponent>().setResource("health", 100.0f);
 				SDL_Delay(5000);
 				Game::isRunning = false;
@@ -571,8 +581,9 @@ void Game::update() {
 
 	// If player hits collectible
 	for (auto& c : collectibles) {
-		if (Collision::AABB(Game::player.getComponent<ColliderComponent>().collider, c->getComponent<ColliderComponent>().collider)) {
+		if (Collision::AABB(Game::hero.collider->collider, c->getComponent<ColliderComponent>().collider)) {
 			Game::hasKey = true;
+			Game::hero.bowSprite->Play("player_idle_bow_purple");
 		}
 	}
 	
@@ -595,8 +606,8 @@ void Game::update() {
 	
 	// If we have key, hold it
 	if (Game::hasKey) {
-		key.getComponent<TransformComponent>().position.x = Game::player.getComponent<ColliderComponent>().collider.x;
-		key.getComponent<TransformComponent>().position.y = Game::player.getComponent<ColliderComponent>().collider.y;
+		key.getComponent<TransformComponent>().position.x = Game::hero.collider->collider.x;
+		key.getComponent<TransformComponent>().position.y = Game::hero.collider->collider.y;
 	}
 	// Check spell CDs
 	if (Game::spelltimers["heal"] == 0) {
@@ -613,6 +624,7 @@ void Game::update() {
 /**************************************************************************/
 void Game::render() {
 
+	// Before we render, lock step animations
 	SDL_RenderClear(renderer);
 	for (auto& t : mapTiles) t->draw();
 	for (auto& t : extraMapTiles) t->draw();

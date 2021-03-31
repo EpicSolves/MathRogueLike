@@ -1,7 +1,7 @@
 #include "AssetManager.h"
 
-AssetManager::AssetManager(Manager *man) {
-	manager = man;
+AssetManager::AssetManager() {
+	manager = &Game::manager;
 
 	// Could probably do this somewhere else, idk
 	Mix_OpenAudio(44100, AUDIO_S16SYS, 6, 512);

@@ -12,10 +12,10 @@ void AIComponent::update() {
 	float enemyX = collider->collider.x + collider->collider.w / 2.0f;
 	float enemyY = collider->collider.y + collider->collider.h / 2.0f;
 
-	float playerX = Game::player.getComponent<ColliderComponent>().collider.x +
-		            Game::player.getComponent<ColliderComponent>().collider.w / 2.0f;
-	float playerY = Game::player.getComponent<ColliderComponent>().collider.y +
-		            Game::player.getComponent<ColliderComponent>().collider.h / 2.0f;
+	float playerX = Game::hero.collider->collider.x +
+				    Game::hero.collider->collider.w / 2.0f;
+	float playerY = Game::hero.collider->collider.y +
+		            Game::hero.collider->collider.h / 2.0f;
 
 	// Determine if we should fire a shot
 	if (canShoot) {
