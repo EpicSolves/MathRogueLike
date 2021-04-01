@@ -103,7 +103,9 @@ private:
 public:
 	Manager();
 	void update() {
-		for (auto& e : entities) e->update();
+		for (auto& e : entities) {
+			e->update();
+		}
 	}
 	void draw() {
 		for (auto& e : entities) e->draw();

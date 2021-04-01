@@ -14,7 +14,7 @@ private:
 	ColliderComponent *collider;
 	TransformComponent *transform;
 	bool abilityIsActive = false;
-	int abilityTimer = 0;
+	int abilityTimer = 5*60 + rand() % 10*60;
 
 	int shootTimer = 0;
 	float randA;

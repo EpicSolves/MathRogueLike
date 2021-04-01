@@ -30,7 +30,7 @@ void AIComponent::update() {
 
 			// Create a little explosion to start the game	
 			Game::assets->CreateProjectile(Vector2D(enemyX, enemyY), Vector2D(xVel, -yVel), 600, 4, "star", Game::groupEnemyProjectiles);
-			shootTimer = (rand() % 3 + 3) * 60;
+			shootTimer = 180 + rand() % 180;
 		}
 	}
 
@@ -38,7 +38,7 @@ void AIComponent::update() {
 	abilityTimer--;
 	if (!abilityIsActive) {
 		if (abilityTimer <= 0) {
-			abilityTimer = 30;
+			abilityTimer = 120 + rand() % 120;
 			abilityIsActive = true;
 			randA = rand() % 1000 / 0.123;
 			randB = rand() % 1000 / 0.123;
@@ -47,18 +47,23 @@ void AIComponent::update() {
 	else {
 		if (abilityTimer <= 0) {
 			abilityIsActive = false;
-			abilityTimer = 90;
+			abilityTimer = 720 + rand() % 360;
 		}
 	}
 
 	if (abilityIsActive) {
 
 		// Pick random direction
-		float xVel = std::cos(randA+randB);
-		float yVel = std::sin(randA+randB);
+		// float xVel = std::cos(randA+randB);
+		// float yVel = std::sin(randA+randB);
+		float xDist = playerX - enemyX;
+		float yDist = enemyY - playerY;
+		float angle = std::atan2(yDist, xDist);
+		float xVel = std::cos(angle);
+		float yVel = std::sin(angle);
 
 		// Create a little explosion to start the game	
-		transform->velocity = Vector2D(xVel / 1.0f, -yVel / 1.0f);
+		transform->velocity = Vector2D(xVel / 1.5f, -yVel / 1.5f);
 	}
 	else {
 
@@ -68,8 +73,6 @@ void AIComponent::update() {
 		float angle = std::atan2(yDist, xDist);
 		float xVel = std::cos(angle);
 		float yVel = std::sin(angle);
-
-		// Create a little explosion to start the game	
-		transform->velocity = Vector2D(xVel / 3.0f, -yVel / 3.0f);
+		transform->velocity = Vector2D(xVel / 4.5f, -yVel / 4.5f);
 	}
 }

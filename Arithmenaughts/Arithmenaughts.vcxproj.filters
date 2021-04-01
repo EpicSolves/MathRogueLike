@@ -135,6 +135,12 @@
     <ClCompile Include="ProjectileComponent.cpp">
       <Filter>Source\ECS</Filter>
     </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsComponent.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Person.png">

@@ -1,6 +1,7 @@
 #pragma once
 #include "Components.h"
 #include "Vector2D.h"
+#include "Game.h"
 
 struct TransformComponent : public Component {
 
@@ -8,41 +9,22 @@ struct TransformComponent : public Component {
 	Vector2D velocity;
 	Vector2D center;
 
+	bool isHero = false;
+
 	int height = 32;
 	int width = 32;
 	int scale = 1;
 	int speed = 3;
 
-	TransformComponent() {
-		this->position.Zero();
-	}
+	TransformComponent();
 
-	TransformComponent(int scale) {
-		this->position.x = 600;
-		this->position.y = 400;
-		this->scale = scale;
-	}
+	TransformComponent(int scale);
 
-	TransformComponent(float x, float y) {
-		this->position.x = x;
-		this->position.y = y;
-	}
+	TransformComponent(float x, float y);
 
-	TransformComponent(float x, float y, int w, int h, int scale) {
-		this->position.x = x;
-		this->position.y = y;
-		this->height = h;
-		this->width = w;
-		this->scale = scale;
-	}
+	TransformComponent(float x, float y, int w, int h, int scale);
 
-	void init() override {
-		this->velocity.Zero();
-	}
+	void init() override;
 
-	void update() override {
-		// Should only take a step if it won't violate bounds
-		position.x += velocity.x*speed;
-		position.y += velocity.y*speed;
-	}
+	void update() override;
 };

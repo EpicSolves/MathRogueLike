@@ -49,6 +49,16 @@ public:
 	// Spawn a wave of enemies
 	void spawnWave(Wave &wave);
 
+	// Check for user hitting escape key
+	void checkForQuitEvent();
+
+	// Where we handle transitioning between rooms
+	void handleLocationUpdates();
+
+	// For handling how we transition to different phases of the game
+	void handlePhaseUpdates();
+	bool inMathPhase();
+
 	static Manager manager;
 	static AssetManager *assets;
 	static int counter;
@@ -56,8 +66,6 @@ public:
 	static SDL_Renderer *renderer;
 	static SDL_Event event;
 	static SDL_Rect camera;
-	static bool eligibleA;
-	static bool eligibleB;
 	static bool hasKey;
 	static int numberAVal;
 	static int numberBVal;
@@ -68,6 +76,7 @@ public:
 	static Entity& player;
 	static int enemyCount;
 	static Hero hero;
+	static bool updateLabels;
 
 	// Determines which phase of the game we are in
 	static enum phase_enum { OVERWORLD_PHASE, MATH_PHASE_0, FIGHT_PHASE_0, 
@@ -91,6 +100,7 @@ public:
 
 	enum groupLabels : std::size_t {
 		groupMap,
+		groupGear,
 		groupPlayers,
 		groupEnemies,
 		groupColliders,

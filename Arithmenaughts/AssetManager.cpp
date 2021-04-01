@@ -16,6 +16,8 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 	projectile.getComponent<SpriteComponent>().Play("star_spin");
 	projectile.addComponent<ProjectileComponent>(range, speed, vel);
 	projectile.addComponent<ColliderComponent>("projectile", 4.0f, 1.0f, 22.0f, 27.0f, false);
+	projectile.getComponent<ColliderComponent>().collider.x = pos.x;
+	projectile.getComponent<ColliderComponent>().collider.y = pos.y;
 	projectile.addGroup(group);
 	// test
 }
@@ -28,6 +30,8 @@ void AssetManager::SpawnEnemy(Vector2D pos, float scale, float health, bool canS
 	enemy.getComponent<SpriteComponent>().Play("skeleton_idle");
 	enemy.addComponent<ColliderComponent>("enemy", 0, 0, 24*scale, 32*scale, false);
 	enemy.getComponent<ColliderComponent>().health = health;
+	enemy.getComponent<ColliderComponent>().collider.x = pos.x;
+	enemy.getComponent<ColliderComponent>().collider.y = pos.y;
 	enemy.addComponent<AIComponent>(canShoot);
 	enemy.addGroup(Game::groupEnemies);
 

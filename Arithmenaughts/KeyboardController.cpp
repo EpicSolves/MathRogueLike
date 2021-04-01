@@ -6,8 +6,7 @@ void KeyboardController::init()  {
 }
 
 void KeyboardController::update() {
-	Game::keyState = SDL_GetKeyboardState(NULL);
-
+	
 	// Check if we need to exit the game
 	if (Game::keyState[SDL_SCANCODE_ESCAPE]) {
 		Game::isRunning = false;
@@ -75,12 +74,14 @@ void KeyboardController::update() {
 
 	// Animating the player
 	if (transform->velocity.x == 0 && transform->velocity.y == 0) {
+		Game::hero.bowSprite->Play("player_idle");
 		sprite->Play("player_idle");
 	}
 	else if (Game::dashCooldown) {
 		sprite->Play("player_dash");
 	}
 	else {
+		Game::hero.bowSprite->Play("player_run");
 		sprite->Play("player_run");
 	}
 
@@ -107,7 +108,7 @@ void KeyboardController::update() {
 			float xVel = -1.0f;
 			float yVel = transform->velocity.y / 2.0f;
 
-			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(xVel, yVel), 400, Game::shootSpeed, "star", Game::groupPlayerProjectiles);
+			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(xVel, yVel), 400, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
 			Game::assets->PlaySound("star_shot");
 		}
 	}
@@ -117,7 +118,7 @@ void KeyboardController::update() {
 			rightDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
 			float y = transform->position.y + 52 * transform->scale;
-			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(1, transform->velocity.y / 2.0f), 400, Game::shootSpeed, "star", Game::groupPlayerProjectiles);
+			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(1, transform->velocity.y / 2.0f), 400, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
 			Game::assets->PlaySound("star_shot");
 		}
 	}
@@ -127,7 +128,7 @@ void KeyboardController::update() {
 			downDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
 			float y = transform->position.y + 52 * transform->scale;
-			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, 1), 600, Game::shootSpeed, "star", Game::groupPlayerProjectiles);
+			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, 1), 600, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
 			Game::assets->PlaySound("star_shot");
 		}
 	}
@@ -137,7 +138,7 @@ void KeyboardController::update() {
 			upDebounce = true;
 			float x = transform->position.x + 58 * transform->scale;
 			float y = transform->position.y + 52 * transform->scale;
-			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, -1), 600, Game::shootSpeed, "star", Game::groupPlayerProjectiles);
+			Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, -1), 600, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
 			Game::assets->PlaySound("star_shot");
 		}
 	}

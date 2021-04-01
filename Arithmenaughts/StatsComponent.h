@@ -3,6 +3,7 @@
 #include "ECS.h"
 #include <map>
 #include <string>
+#include "Components.h"
 
 class StatsComponent : public Component {
 public:
@@ -10,28 +11,14 @@ public:
 	std::map<std::string, float> resources;
 	std::string trackTag;
 	TransformComponent *transform;
-	StatsComponent() {
-		trackTag = "default";
-		resources[trackTag] = 100.0f;
-	}
-	StatsComponent(std::string initialResource, float value) {
-		resources[initialResource] = value;
-		trackTag = initialResource;
-	}
+	StatsComponent();
+	StatsComponent(std::string initialResource, float value);
 
-	void setResource(std::string tag, float value) {
-		resources[tag] = value;
-	}
+	void setResource(std::string tag, float value);
 
-	float getResource(std::string tag) {
-		return resources[tag];
-	}
+	float getResource(std::string tag);
 
-	void init() override {
-		transform = &entity->getComponent<TransformComponent>();
-	}
+	void init() override;
 
-	void update() override {
-		transform->width = (int)resources[trackTag];
-	}
+	void update() override;
 };
