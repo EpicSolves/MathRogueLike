@@ -143,7 +143,6 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	// Load textures
 	assets->AddTexture("NewtonsGroveOverworld_Tileset", "Assets/Textures/NewtonsGroveOverworld_Tileset.png");
 	assets->AddTexture("NewtonsGroveD0_Tileset", "Assets/Textures/NewtonsGroveD0_Tileset.png");
-	//assets->AddTexture("player_idle", "Assets/Textures/player_idle.png");
 	assets->AddTexture("player_run", "Assets/Textures/player_run.png");
 	assets->AddTexture("player_dash", "Assets/Textures/player_dash.png");
 	assets->AddTexture("numbers", "Assets/Textures/numbers.png");
@@ -203,7 +202,6 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	// Add energy bar display
 	energy.addComponent<TransformComponent>(10.0f, 55.0f, 100.0f, 10.0f, 4);
 	energy.addComponent<SpriteComponent>("energy");
-	energy.addComponent<StatsComponent>("energy", 100.0f);
 	energy.addGroup(groupHUD);
 
 	// The first digit of the number pop-up interface
@@ -435,7 +433,14 @@ void Game::update() {
 	energy.getComponent<TransformComponent>().position.x = camera.x + 10.0;
 	energy.getComponent<TransformComponent>().position.y = camera.y + 50.0;
 	
+	// Refill some energy
+	updateEnergy();
+
+	// Update HUD (update hit points and energy bars)
+	updateHUD();
+
 	if (Game::updateLabels) {
+
 		// Create new stats labels
 		char labelBuffer[32];
 		SDL_Color white = { 255, 255, 255, 75 };
@@ -594,8 +599,6 @@ void Game::handleLocationUpdates() {
 		// Check if the user entered a dungeon
 
 		if (Game::hero.collider->collider.x > Map::mapWidth) {
-			Game::phase = Game::MATH_PHASE_0;
-			Game::phaseTimer = MATH_PHASE_0_TIMER;
 			Game::location = 1;
 
 			// Clean it up
@@ -603,14 +606,16 @@ void Game::handleLocationUpdates() {
 			cleanMapTiles();
 
 			// Load dungeon 0
-			Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
-			Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
+			Map::mapWidth = TILE_SIZE * MAP_SCALE * 100;
+			Map::mapHeight = TILE_SIZE * MAP_SCALE * 100;
 			map = new Map("NewtonsGroveD0_Tileset", MAP_SCALE, TILE_SIZE);
-			map->LoadMap("Assets/Maps/NewtonsGroveD0.map", 10, 10, "NewtonsGroveD0_Tileset");
+			map->generateOverworld("Assets/Maps/overworld0.map", 100, 100);
+			map->LoadMap("Assets/Maps/overworld0.map", 100, 100, "NewtonsGroveD0_Tileset");
 			Game::hero.transform->position.x = 64;
 			Game::hero.collider->update();
 
 			// Shut the gate
+			/*
 			auto& newTile(Game::manager.addEntity());
 			newTile.addComponent<TransformComponent>(0, 6 * TILE_SIZE* MAP_SCALE, TILE_SIZE, TILE_SIZE, MAP_SCALE);
 			newTile.addComponent<SpriteComponent>("NewtonsGroveD0_Tileset");
@@ -635,9 +640,11 @@ void Game::handleLocationUpdates() {
 			auto& gateBCollider(Game::manager.addEntity());
 			gateBCollider.addComponent<ColliderComponent>("GateB", 0, 7 * TILE_SIZE*MAP_SCALE, 32 * MAP_SCALE, true);
 			gateBCollider.addGroup(groupMapColliders);
+			*/
 		}
 	}
 	else if (Game::location == 1) {
+		/*
 		if (Game::hero.collider->collider.x < -50) {
 			// Clean it up
 			free(map);
@@ -651,8 +658,38 @@ void Game::handleLocationUpdates() {
 			Game::hero.transform->position.x = 1000;
 			Game::hero.collider->update();
 			Game::location = 0;
+		}*/
+		
+		//printf("%d\n", map->cavePositionsX[0]);
+		// Check to see if we have entered a case
+		for (int i = 0; i < 10; i++) {
+			//printf("%d %d %d %d\n", Game::hero.collider->collider.x, Game::hero.collider->collider.y, map->cavePositionsX[i]*TILE_SIZE*MAP_SCALE, map->cavePositionsY[i]*TILE_SIZE*MAP_SCALE);
+			if (Game::hero.collider->collider.x > map->cavePositionsX[i]*TILE_SIZE*MAP_SCALE && 
+				Game::hero.collider->collider.x < (map->cavePositionsX[i] + 2) * TILE_SIZE*MAP_SCALE  &&
+				Game::hero.collider->collider.y > map->cavePositionsY[i] *TILE_SIZE*MAP_SCALE &&
+				Game::hero.collider->collider.y < (map->cavePositionsY[i] + 2) * TILE_SIZE*MAP_SCALE) {
+				Game::location = 2;
+				Game::phase = Game::MATH_PHASE_0;
+				Game::phaseTimer = MATH_PHASE_0_TIMER;
+
+				// Clean it up
+				free(map);
+				cleanMapTiles();
+
+				// Load dungeon 0
+				Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
+				Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
+				map = new Map("NewtonsGroveD0_Tileset", MAP_SCALE, TILE_SIZE);
+				map->generateRoom("Assets/Maps/room0.map", 10, 10);
+				map->LoadMap("Assets/Maps/room0.map", 10, 10, "NewtonsGroveD0_Tileset");
+				Game::hero.transform->position.x = 300;
+				Game::hero.transform->position.y = 300;
+				Game::hero.collider->update();
+				break;
+			}
 		}
-	}
+		
+	} 
 }
 
 void Game::handlePhaseUpdates() {
@@ -721,4 +758,12 @@ bool Game::inMathPhase() {
 	return Game::phase == MATH_PHASE_0 ||
 		Game::phase == MATH_PHASE_1 ||
 		Game::phase == MATH_PHASE_2;
+}
+
+void Game::updateHUD() {
+	energy.getComponent<TransformComponent>().width = Game::hero.energy;
+}
+
+void Game::updateEnergy() {
+	Game::hero.energy = std::min(100.0f, Game::hero.energy + Game::hero.energyRefillRate);
 }

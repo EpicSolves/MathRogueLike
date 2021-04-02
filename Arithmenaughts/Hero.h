@@ -26,14 +26,18 @@ public:
 	float agility = 5.0;
 	float critical = 5.0f;
 	float stamina = 5.0f;
-	float hitPoints = 100.0f*(1.0f + stamina / 500.0f);
-
+	
 	// Underlying stats
 	float shotSpeed = agility;
 	float damageIncreaseCoeff = 1.0f + (agility + strength) / 1000.0f;
 	float damageReductionCoeff = 1.0f + stamina / 500.0f;
-	float shotCooldown;
+	float shotCooldown = 30.0f;
 	float damagerPerShot = (strength*3.0 + agility)*damageIncreaseCoeff;
+
+	// HUD elements
+	float energy = 100;
+	float hitPoints = 100.0f*(1.0f + stamina / 500.0f);
+	float energyRefillRate = 0.33f;
 
 	// Boolean for flagging when stats change
 	bool statsChanged = true;

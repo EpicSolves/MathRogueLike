@@ -21,4 +21,5 @@ private:
 	bool rightDebounce = false;
 	bool upDebounce    = false;
 	bool downDebounce  = false;
+	int shotTimer = 0;
 };

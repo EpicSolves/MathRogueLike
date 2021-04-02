@@ -59,6 +59,10 @@ public:
 	void handlePhaseUpdates();
 	bool inMathPhase();
 
+	// Update hood
+	void updateHUD();
+	void updateEnergy();
+
 	static Manager manager;
 	static AssetManager *assets;
 	static int counter;
