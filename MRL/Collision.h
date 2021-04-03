@@ -10,4 +10,5 @@ public:
 	static bool AABB(const SDL_Rect &rectA, const SDL_Rect &B);
 	static bool AABB(const SDL_Rect &rectA, const SDL_Rect &B, uint8_t *side);
 	static bool AABB(const ColliderComponent& A, const ColliderComponent& B);
+	static void PlayerCollision(const ColliderComponent& A, bool cp[6]);
 };

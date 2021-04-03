@@ -18,7 +18,7 @@ TileComponent::TileComponent(int srcX, int srcY, int xPos, int yPos, int tsize, 
 }
 
 void TileComponent::draw() {
-	TextureManager::Draw(texture, sRect, dRect, SDL_FLIP_NONE);
+	TextureManager::Draw(texture, sRect, dRect, 0.0f, SDL_FLIP_NONE);
 }
 
 void TileComponent::update() {

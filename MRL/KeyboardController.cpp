@@ -20,8 +20,10 @@ void KeyboardController::update() {
 	if (Game::keyState[SDL_SCANCODE_SPACE]) {
 		if (!Game::dashCooldown && Game::hero.energy >= 20) {
 			Game::dashCooldown = true;
-			Game::dashDuration = 33;
+
+			Game::dashDuration = 20;
 			Game::hero.energy -= 33;
+			sprite->currentFrame = 0;
 		}
 		else {
 			Game::dashDuration--;
@@ -94,13 +96,6 @@ void KeyboardController::update() {
 	else if (transform->velocity.x < 0) {
 		sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 	}
-
-	// We do not want to be able to shoot during the math phase
-	if (Game::keyState[SDL_SCANCODE_LCTRL] || 
-		Game::phase == Game::MATH_PHASE_0  || 
-		Game::phase == Game::MATH_PHASE_1  || 
-		Game::phase == Game::MATH_PHASE_2)
-		return;
 	 
 	// We can still solve during the fighting phase, but it is optional
 	if (Game::keyState[SDL_SCANCODE_LEFT] || Game::keyState[SDL_SCANCODE_KP_4] || Game::keyState[SDL_SCANCODE_H]) {

@@ -33,7 +33,7 @@ void SpriteComponent::update() {
 }
 
 void SpriteComponent::draw() {
-	TextureManager::Draw(texture, sRect, dRect, spriteFlip);
+	TextureManager::Draw(texture, sRect, dRect, angle, spriteFlip);
 }
 
 void SpriteComponent::AddAnimation(std::string aID, std::string tID, int i, int f, int s) {

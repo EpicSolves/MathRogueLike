@@ -14,7 +14,8 @@ Map::Map(std::string tid, int ms, int ts) : texId(tid), mapScale(ms), tileSize(t
 
 Map::~Map() {}
 
-void Map::LoadMap(std::string path, int sizeX, int sizeY, std::string tileset) {
+void Map::LoadMap(std::string path, int roomX, int roomY, int sizeX, int sizeY, std::string tileset) {
+	printf("Loading room %d %d\n", roomX, roomY);
 	char c;
 	std::fstream mapFile;
 	mapFile.open(path);
@@ -35,7 +36,6 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY, std::string tileset) {
 	}
 
 	mapFile.ignore();
-	//mapFile.ignore();
 	for (int y = 0; y < sizeY; y++) {
 		for (int x = 0; x < sizeX; x++) {
 			mapFile.get(c);
@@ -48,6 +48,25 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY, std::string tileset) {
 		}
 	}
 	mapFile.close();
+
+	// Now that map tiles are created, we need to add the animated components
+	for (int y = 0; y < sizeY; y++) {
+		for (int x = 0; x < sizeX; x++) {
+			if (roomAnimations.find({ roomX, roomY }) != roomAnimations.end()) {
+				if (roomAnimations[{roomX, roomY}].find({ x,y }) != roomAnimations[{roomX, roomY}].end()) {
+					// Add animation tile
+					auto& fire(Game::manager.addEntity());
+					fire.addComponent<TransformComponent>(x*tileSize*mapScale, y*tileSize*mapScale, tileSize, tileSize, mapScale);
+					fire.addComponent<SpriteComponent>(true, 97);
+					fire.getComponent<SpriteComponent>().AddAnimation(roomAnimations[{roomX, roomY}][{x, y}], roomAnimations[{roomX, roomY}][{x, y}], 0, 4, 200);
+					fire.getComponent<SpriteComponent>().Play(roomAnimations[{roomX, roomY}][{x, y}]);
+					fire.getComponent<SpriteComponent>().currentFrame = rand() % 4;
+					fire.addComponent<ColliderComponent>(roomAnimations[{roomX, roomY}][{x, y}], 0, 0, tileSize*mapScale, tileSize*mapScale, false);
+					fire.addGroup(Game::groupMapHazards);
+				}
+			}
+		}
+	}
 }
 
 void Map::AddTile(int srcX, int srcY, int xPos, int yPos) {
@@ -56,10 +75,11 @@ void Map::AddTile(int srcX, int srcY, int xPos, int yPos) {
 	tile.addGroup(Game::groupMap);
 }
 
-void Map::generateRoom(std::string filePath, int width, int height, bool doors[4]) {
+void Map::generateRoom(std::string filePath, int rx, int ry, int width, int height, bool doors[4]) {
 	std::ofstream mapFile;
 	mapFile.open(filePath);
 	vvs map = vvs(height, vs(width, "base"));
+	roomCleared[{rx, ry}] = false;
 
 	// Make top and bottom walls
 	for (int i = 0; i < width; i++) {
@@ -70,6 +90,7 @@ void Map::generateRoom(std::string filePath, int width, int height, bool doors[4
 		// Make bottom a wall
 		map[height - 1][i] = "wall";
 	}
+
 	// Make left and right walls
 	for (int i = 0; i < height; i++) {
 
@@ -80,27 +101,49 @@ void Map::generateRoom(std::string filePath, int width, int height, bool doors[4
 		map[i][width - 1] = "wall";
 	}
 
+	// Add a fire with 50% probability
+	while (rand() % 100 < 50) {	
+		int mx = 1 + rand() % (roomWidth - 2);
+		int my = 1 + rand() % (roomHeight - 2);
+		if (roomAnimations.find({ rx, ry }) != roomAnimations.end()) {
+			if (roomAnimations[{rx, ry}].find({ mx,my }) != roomAnimations[{rx, ry}].end()) {
+				continue;
+			}
+		}
+		roomAnimations[{rx, ry}][{mx, my}] = "fire";
+	}
+
 	// Add right door if exists
-	if (doors[0])
+	roomGates[{rx, ry}] = 0;
+	if (doors[0]) {
 		map[height / 2][width - 1] = "base";
+		roomGates[{rx, ry}] |= 0x8;
+		printf("Generated gate for room %d %d\n", rx, ry);
+	}
 
 	// Add left door if exists
-	if (doors[1])
+	if (doors[1]) {
 		map[height / 2][0] = "base";
+		roomGates[{rx, ry}] |= 0x4;
+	}
 
 	// Add top door if exists
-	if (doors[2])
-		map[0][width/2] = "base";
+	if (doors[2]) {
+		map[0][width / 2] = "base";
+		roomGates[{rx, ry}] |= 0x2;
+	}
 
 	// Add bot door if exists
-	if (doors[3])
-		map[height-1][width / 2] = "base";
+	if (doors[3]) {
+		map[height - 1][width / 2] = "base";
+		roomGates[{rx, ry}] |= 0x1;
+	}
 
 	// Convert map to values
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
 
-			mapFile << tileType[map[row][col]];
+			mapFile << tileType[map[row][col]][0];
 			if (col != width - 1)
 				mapFile << ",";
 			else
@@ -196,7 +239,7 @@ void Map::generateOverworld(std::string filePath, int width, int height) {
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
 
-			mapFile << tileType[map[row][col]];
+			mapFile << tileType[map[row][col]][0];
 			if (col != width - 1)
 				mapFile << ",";
 			else
@@ -232,38 +275,31 @@ void Map::setTileset(std::string path) {
 
 void Map::generateGraph(int numberOfRooms, Vector2D s, Vector2D t) {
 	graphRoot = new Node(s.x, s.y);
-	float rE = pow(pow(abs(graphRoot->x + 1 - t.x), 2) + std::pow(abs(graphRoot->y + 0 - t.y), 2), 1.0f);
-	float lE = pow(pow(abs(graphRoot->x - 1 - t.x), 2) + std::pow(abs(graphRoot->y + 0 - t.y), 2), 1.0f);
-	float tE = pow(pow(abs(graphRoot->x + 0 - t.x), 2) + std::pow(abs(graphRoot->y - 1 - t.y), 2), 1.0f);
-	float bE = pow(pow(abs(graphRoot->x + 0 - t.x), 2) + std::pow(abs(graphRoot->y + 1 - t.y), 2), 1.0f);
-	float sE = rE + lE + bE + tE;
-	float de = 4 * sE - rE - lE - tE - bE;
-	float rP = (sE - rE) / de;
-	float lP = (sE - lE) / de;
-	float tP = (sE - tE) / de;
-	float bP = (sE - bE) / de;
+	// TODO clear graph, animations, and gate maps
+	float rE = pow(abs(graphRoot->x + 1 - t.x), 2) + std::pow(abs(graphRoot->y + 0 - t.y), 2);
+	float lE = pow(abs(graphRoot->x - 1 - t.x), 2) + std::pow(abs(graphRoot->y + 0 - t.y), 2);
+	float tE = pow(abs(graphRoot->x + 0 - t.x), 2) + std::pow(abs(graphRoot->y - 1 - t.y), 2);
+	float bE = pow(abs(graphRoot->x + 0 - t.x), 2) + std::pow(abs(graphRoot->y + 1 - t.y), 2);
 	
-	printf("Right: %.2f Left: %.2f Top: %.2f Bottom: %.2f\n", rP, lP, tP, bP);
 	std::vector<std::pair<float, std::string>> v;
-	v.push_back(std::make_pair(rP, "right"));
-	v.push_back(std::make_pair(lP, "left"));
-	v.push_back(std::make_pair(tP, "top"));
-	v.push_back(std::make_pair(bP, "bottom"));
+	v.push_back(std::make_pair(rE, "right"));
+	v.push_back(std::make_pair(lE, "left"));
+	v.push_back(std::make_pair(tE, "top"));
+	v.push_back(std::make_pair(bE, "bottom"));
 	std::sort(v.begin(), v.end());
-	v[0] = std::make_pair(0.70, v[3].second);
-	v[1] = std::make_pair(0.60, v[2].second);
-	v[2] = std::make_pair(0.40, v[1].second);
-	v[3] = std::make_pair(0.20, v[0].second);
+
+	v[0] = std::make_pair(0.50, v[0].second);
+	v[1] = std::make_pair(0.50, v[1].second);
+	v[2] = std::make_pair(0.50, v[2].second);
+	v[3] = std::make_pair(0.50, v[3].second);
 
 	// Based on probabilities, choose neighbor
 	while (v.size() > 0) {
 		for (int i = 0; i < v.size(); i++) {
 			float r = rand() % 100;
-			printf("%.2f\n", r);
 			if (r < 100.0f*v[i].first) {
 				// If not visited, explore r.second
 				if (v[i].second == "right") {
-					printf("Selected Right\n");
 					if (graphRoot->right == NULL) {
 						Node *n = new Node(s.x + 1, s.y);
 						graphRoot->right = n;
@@ -273,7 +309,6 @@ void Map::generateGraph(int numberOfRooms, Vector2D s, Vector2D t) {
 						return;
 					}
 				} else if (v[i].second == "left") {
-					printf("Selected Left\n");
 					if (graphRoot->left == NULL) {
 						Node *n = new Node(s.x - 1, s.y);
 						graphRoot->left = n;
@@ -283,7 +318,6 @@ void Map::generateGraph(int numberOfRooms, Vector2D s, Vector2D t) {
 						return;
 					}
 				} else if (v[i].second == "top") {
-					printf("Selected Top\n");
 					if (graphRoot->top == NULL) {
 						Node *n = new Node(s.x, s.y-1);
 						graphRoot->top = n;
@@ -293,7 +327,6 @@ void Map::generateGraph(int numberOfRooms, Vector2D s, Vector2D t) {
 						return;
 					}
 				} else if (v[i].second == "bottom") {
-					printf("Selected Bot\n");
 					if (graphRoot->bot == NULL) {
 						Node *n = new Node(s.x, s.y + 1);
 						graphRoot->bot = n;
@@ -312,44 +345,34 @@ void Map::generateGraph(int numberOfRooms, Vector2D s, Vector2D t) {
 	}
 }
 bool Map::explore(Node *node, Vector2D t) {
-	std::cout << "Exploring (" << node->x << ", " << node->y << ")" << std::endl;
 	if (t.x == node->x && t.y == node->y) {
 		return true;
 	}
 	if (node->x < 0 || node->y < 0 || node->x > 10 || node->y > 10)
 		return false;
-	float rE = pow(pow(abs(node->x + 1 - t.x), 2) + std::pow(abs(node->y + 0 - t.y), 2), 6.0f);
-	float lE = pow(pow(abs(node->x - 1 - t.x), 2) + std::pow(abs(node->y + 0 - t.y), 2), 6.0f);
-	float tE = pow(pow(abs(node->x + 0 - t.x), 2) + std::pow(abs(node->y - 1 - t.y), 2), 6.0f);
-	float bE = pow(pow(abs(node->x + 0 - t.x), 2) + std::pow(abs(node->y + 1 - t.y), 2), 6.0f);
-	float sE = rE + lE + bE + tE;
-	float de = 4 * sE - rE - lE - tE - bE;
-	float rP = (sE - rE) / de;
-	float lP = (sE - lE) / de;
-	float tP = (sE - tE) / de;
-	float bP = (sE - bE) / de;
+	float rE = pow(abs(node->x + 1 - t.x), 2) + std::pow(abs(node->y + 0 - t.y), 2);
+	float lE = pow(abs(node->x - 1 - t.x), 2) + std::pow(abs(node->y + 0 - t.y), 2);
+	float tE = pow(abs(node->x + 0 - t.x), 2) + std::pow(abs(node->y - 1 - t.y), 2);
+	float bE = pow(abs(node->x + 0 - t.x), 2) + std::pow(abs(node->y + 1 - t.y), 2);
 
-	printf("Right: %.2f Left: %.2f Top: %.2f Bottom: %.2f\n", rP, lP, tP, bP);
 	std::vector<std::pair<float, std::string>> v;
-	v.push_back(std::make_pair(rP, "right"));
-	v.push_back(std::make_pair(lP, "left"));
-	v.push_back(std::make_pair(tP, "top"));
-	v.push_back(std::make_pair(bP, "bottom"));
+	v.push_back(std::make_pair(rE, "right"));
+	v.push_back(std::make_pair(lE, "left"));
+	v.push_back(std::make_pair(tE, "top"));
+	v.push_back(std::make_pair(bE, "bottom"));
 	std::sort(v.begin(), v.end());
-	v[0] = std::make_pair(0.70, v[3].second);
-	v[1] = std::make_pair(0.60, v[2].second);
-	v[2] = std::make_pair(0.40, v[1].second);
-	v[3] = std::make_pair(0.20, v[0].second);
+	v[0] = std::make_pair(0.50, v[0].second);
+	v[1] = std::make_pair(0.50, v[1].second);
+	v[2] = std::make_pair(0.50, v[2].second);
+	v[3] = std::make_pair(0.50, v[3].second);
 
 	// Based on probabilities, choose neighbor
 	while (v.size() > 0) {
 		for (int i = 0; i < v.size(); i++) {
 			float r = rand() % 100;
-			printf("%.2f\n", r);
 			if (r < 100.0f*v[i].first) {
 				// If not visited, explore r.second
 				if (v[i].second == "right") {
-					printf("Selected right\n");
 					if (node->right == NULL) {
 						Node *n = new Node(node->x + 1, node->y);
 						node->right = n;
@@ -360,7 +383,6 @@ bool Map::explore(Node *node, Vector2D t) {
 					}
 				}
 				else if (v[i].second == "left") {
-					printf("Selected left\n");
 					if (node->left == NULL) {
 						Node *n = new Node(node->x - 1, node->y);
 						node->left = n;
@@ -371,7 +393,6 @@ bool Map::explore(Node *node, Vector2D t) {
 					}
 				}
 				else if (v[i].second == "top") {
-					printf("Selected top\n");
 					if (node->top == NULL) {
 						Node *n = new Node( node->x, node->y - 1);
 						node->top = n;
@@ -382,7 +403,6 @@ bool Map::explore(Node *node, Vector2D t) {
 					}
 				}
 				else if (v[i].second == "bottom") {
-					printf("Selected bottom\n");
 					if (node->bot == NULL) {
 						Node *n = new Node(node->x, node->y + 1);
 						node->bot = n;
@@ -416,7 +436,7 @@ void Map::generateRooms(std::string tileSet, int width, int height) {
 	doors[2] = graphRoot->top != NULL;
 	doors[3] = graphRoot->bot != NULL;
 	
-	generateRoom(graphRoot->mapName, width, height, doors);
+	generateRoom(graphRoot->mapName, graphRoot->x, graphRoot->y, width, height, doors);
 	visited[{graphRoot->x, graphRoot->y}] = true;
 	if (graphRoot->right != NULL && visited.find({ graphRoot->x + 1, graphRoot->y }) == visited.end()) {
 		dfsExplore(graphRoot->right);
@@ -440,7 +460,7 @@ void Map::dfsExplore(Node *node) {
 	doors[2] = node->top != NULL;
 	doors[3] = node->bot != NULL;
 
-	generateRoom(node->mapName, roomWidth, roomHeight, doors);
+	generateRoom(node->mapName, node->x, node->y, roomWidth, roomHeight, doors);
 	if (node->right != NULL && visited.find({ node->x + 1, node->y }) == visited.end()) {
 		dfsExplore(node->right);
 	}

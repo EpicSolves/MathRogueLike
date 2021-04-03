@@ -21,7 +21,7 @@ void Hero::init() {
 	// Add animations
 	sprite->AddAnimation("player_idle", "player_idle_base", 0, 8, 100);
 	sprite->AddAnimation("player_run", "player_run_base", 0, 8, 100);
-	sprite->AddAnimation("player_dash", "player_dash", 0, 6, 55.555f);
+	sprite->AddAnimation("player_dash", "player_dash", 0, 6, 60.555f);
 
 	// Play an initial animation
 	sprite->Play("player_idle");
@@ -57,7 +57,9 @@ void Hero::calculateStats() {
 	stamina = 5.0f + bowStamina + solveStaminaBonus;
 	
 	// Resulting stats based on non-dependent stats
-	hitPoints = 100.0f*(1.0f + stamina / 500.0f);
+	float hpDiff = 100.0f*(1.0f + stamina / 500.0f) - maxHitPoints;
+	maxHitPoints = 100.0f*(1.0f + stamina / 500.0f);
+	currHitPoints += hpDiff;
 	shotSpeed = agility;
 	damageIncreaseCoeff = 1.0f + (agility + strength) / 100.0f;
 	damageReductionCoeff = 1.0f - stamina / 500.0f;

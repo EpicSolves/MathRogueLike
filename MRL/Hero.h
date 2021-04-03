@@ -36,7 +36,8 @@ public:
 
 	// HUD elements
 	float energy = 100;
-	float hitPoints = 100.0f*(1.0f + stamina / 500.0f);
+	float maxHitPoints = 100.0f*(1.0f + stamina / 500.0f);
+	float currHitPoints = maxHitPoints;
 	float energyRefillRate = 0.33f;
 
 	// Boolean for flagging when stats change

@@ -53,5 +53,5 @@ void ColliderComponent::update()  {
 
 void ColliderComponent::draw() {
 	if (DRAW_COLLISION_BOXES)
-		TextureManager::Draw(tex, sRect, dRect, SDL_FLIP_NONE);
+		TextureManager::Draw(tex, sRect, dRect, 0.0f, SDL_FLIP_NONE);
 }

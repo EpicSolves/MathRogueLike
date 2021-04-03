@@ -44,7 +44,8 @@ public:
 
 	// For removing tiles and colliders of the map
 	void cleanMapTiles();
-	void removeGate();
+	void addGates();
+	void removeGates();
 
 	// Spawn a wave of enemies
 	void spawnWave(Wave &wave);
@@ -62,6 +63,9 @@ public:
 	// Update hood
 	void updateHUD();
 	void updateEnergy();
+
+	// Update camera
+	void updateCamera();
 
 	static Manager manager;
 	static AssetManager *assets;
@@ -85,10 +89,7 @@ public:
 	static Map map;
 
 	// Determines which phase of the game we are in
-	static enum phase_enum { OVERWORLD_PHASE, MATH_PHASE_0, FIGHT_PHASE_0, 
-	                                          MATH_PHASE_1, FIGHT_PHASE_1,
-	                                          MATH_PHASE_2, FIGHT_PHASE_2, 
-	                                          BOSS_PHASE };
+	static enum phase_enum { PEACE_PHASE, DOOR_PHASE, MATH_PHASE, FIGHT_PHASE, BOSS_PHASE };
 	static int phase;
 	static int phaseTimer;
 
@@ -106,6 +107,7 @@ public:
 
 	enum groupLabels : std::size_t {
 		groupMap,
+		groupMapHazards,
 		groupGear,
 		groupPlayers,
 		groupEnemies,
@@ -117,7 +119,8 @@ public:
 		groupCollectibles,
 		groupUILabels,
 		groupMapColliders,
-		groupExtraMapTiles
+		groupExtraMapTiles,
+		groupGates
 	};
 
 private:

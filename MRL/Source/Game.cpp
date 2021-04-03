@@ -37,8 +37,7 @@ int Game::counter = 0;
 int Game::enemyCount = 0;
 
 // Initialize phase to math phase and timer to 15 seconds
-int Game::phase = Game::OVERWORLD_PHASE;
-int Game::phaseTimer = MATH_PHASE_0_TIMER;
+int Game::phase = Game::PEACE_PHASE;
 int Game::locationX = 0;
 int Game::locationY = 0;
 
@@ -54,9 +53,6 @@ const uint8_t *Game::keyState = 0;
 // Spell and ability cooldowns
 int Game::dashDuration = 0;
 bool Game::dashCooldown = false;
- 
-//int Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
-//int Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
 
 // create a list of objects to be used in our game
 Hero Game::hero = Hero();
@@ -85,6 +81,8 @@ auto& mapTiles(Game::manager.getGroup(Game::groupMap));
 auto& mapColliders(Game::manager.getGroup(Game::groupMapColliders));
 auto& extraMapTiles(Game::manager.getGroup(Game::groupExtraMapTiles));
 auto& gear(Game::manager.getGroup(Game::groupGear));
+auto& mapHazards(Game::manager.getGroup(Game::groupMapHazards));
+auto& gates(Game::manager.getGroup(Game::groupGates));
 
 // Game constructor/deconstructor defaults
 Game::Game() {}
@@ -140,7 +138,7 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 
 	// Everything has worked so far
 	isRunning = true;
-	
+
 	// Load textures
 	assets->AddTexture("NewtonsGroveOverworld_Tileset", "Assets/Textures/NewtonsGroveOverworld_Tileset.png");
 	assets->AddTexture("NewtonsGroveD0_Tileset", "Assets/Textures/NewtonsGroveD0_Tileset.png");
@@ -160,6 +158,8 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	assets->AddTexture("player_run_base", "Assets/Textures/PlayerRunBase.png");
 	assets->AddTexture("player_run_bow_brown", "Assets/Textures/PlayerRunBrown.png");
 	assets->AddTexture("player_run_bow_purple", "Assets/Textures/PlayerRunPurple.png");
+	assets->AddTexture("fire", "Assets/Textures/NewtonsGroveFire.png");
+	assets->AddTexture("gate", "Assets/Textures/NewtonsGroveGate.png");
 
 	// Load fonts
 	assets->AddFont("verdana", "Assets/Fonts/Verdana.ttf", 20);
@@ -173,21 +173,23 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	assets->AddSound("energy_up", "Assets/Sounds/energy_up.wav");
 	assets->AddSound("skeleton_dead", "Assets/Sounds/skeleton_dead.wav");
 	assets->AddSound("boss_dead", "Assets/Sounds/victory.wav");
-	
+
 	// Load the map
 	map = Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
-	map.generateGraph(2, Vector2D(0,0), Vector2D(5, 3));
+	map.generateGraph(2, Vector2D(0, 0), Vector2D(3, 3));
 	map.generateRooms("NewtonsGroveD0_Tileset", 10, 10);
-	map.LoadMap(map.graphRoot->mapName, map.roomWidth, map.roomHeight, map.texId);
+	map.LoadMap(map.graphRoot->mapName, map.graphRoot->x, map.graphRoot->y, map.roomWidth, map.roomHeight, map.texId);
+	removeGates();
+	map.roomCleared[{0, 0}] = true;
 
 	// Get an initial keyboard state
 	Game::keyState = SDL_GetKeyboardState(NULL);
 
 	// Create Labels
 	SDL_Color white = { 255, 255, 255, 200 };
-	healthLabel.addComponent<UILabel>(10, 10, "Health", "verdana", white, "health_label");
+	healthLabel.addComponent<UILabel>(15, 13, "Health", "verdana", white, "health_label");
 	healthLabel.addGroup(groupUILabels);
-	energyLabel.addComponent<UILabel>(10, 50, "Energy", "verdana", white, "energy_label");
+	energyLabel.addComponent<UILabel>(15, 53, "Energy", "verdana", white, "energy_label");
 	energyLabel.addGroup(groupUILabels);
 	score.addComponent<UILabel>(10, 90, "Score: 0", "verdana", white, "score_label");
 	score.addGroup(groupUILabels);
@@ -199,7 +201,6 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	// Add health bar display
 	health.addComponent<TransformComponent>(10.0f, 10.0f, 100.0f, 10.0f, 4);
 	health.addComponent<SpriteComponent>("health");
-	health.addComponent<StatsComponent>("health", 100.0f);
 	health.addGroup(groupHUD);
 
 	// Add energy bar display
@@ -283,6 +284,118 @@ void Game::update() {
 	Game::hero.bowSprite->currentFrame = Game::hero.sprite->currentFrame;
 	Game::hero.bowSprite->spriteFlip = Game::hero.sprite->spriteFlip;
 
+	Game::manager.refresh();
+	Game::manager.update();
+
+	SDL_Rect playerCol = Game::hero.collider->collider;
+
+	// See which player points collided
+
+	bool cp[8] = { false, false, false, false, false, false, false, false };
+	for (auto& c : mapColliders) {
+		Collision::PlayerCollision(c->getComponent<ColliderComponent>(), cp);
+	}
+	
+	for (auto& g : gates) {
+		Collision::PlayerCollision(g->getComponent<ColliderComponent>(), cp);
+	}
+
+	// Handle collision of player
+	bool collided = false;
+	bool fullSide = false;
+	for (int i = 0; i < 8; i++) {
+		collided |= cp[i];
+	}
+	
+	// Full right
+	if (cp[2] == true && cp[4] == true && cp[7] == true) {
+		Game::hero.transform->position.x = playerPos.x - 0.01f;
+		fullSide = true;
+	}
+	// Full top
+	if (cp[0] == true && cp[1] == true && cp[2] == true) {
+		Game::hero.transform->position.y = playerPos.y + 0.01f;
+		fullSide = true;
+	}
+	// Full left
+	if (cp[0] == true && cp[3] == true && cp[5] == true) {
+		Game::hero.transform->position.x = playerPos.x + 0.01f;
+		fullSide = true;
+	}
+	// Full bot
+	if (cp[5] == true && cp[6] == true && cp[7] == true) {
+		Game::hero.transform->position.y = playerPos.y - 0.01f;
+		fullSide = true;
+	}
+
+	// If a full side didn't hit, check corners
+	if (!fullSide) {
+		// Top right corner
+		if (cp[2] == true) {
+			// Reset X and check
+			bool xResetGood = true;
+			for (auto& c : mapColliders) 
+				xResetGood &= !Collision::ABB(Vector2D(playerPos.x + Game::hero.collider->xOffset + Game::hero.collider->collider.w, Game::hero.collider->collider.y), c->getComponent<ColliderComponent>().collider);
+			if (xResetGood) {
+				std::cout << "good\n";
+				Game::hero.transform->position.x = playerPos.x - 0.01f;
+			}
+			else {
+				std::cout << "false\n";
+				Game::hero.transform->position.y = playerPos.y + 0.01f;
+			}
+		}
+		else if (cp[0] == true) {
+			// Reset X and check
+			bool xResetGood = true;
+			for (auto& c : mapColliders)
+				xResetGood &= !Collision::ABB(Vector2D(playerPos.x + Game::hero.collider->xOffset, Game::hero.collider->collider.y), c->getComponent<ColliderComponent>().collider);
+			if (xResetGood) {
+				std::cout << "good\n";
+				Game::hero.transform->position.x = playerPos.x + 0.01f;
+			}
+			else {
+				std::cout << "false\n";
+				Game::hero.transform->position.y = playerPos.y + 0.01f;
+			}
+		}
+		else if (cp[7] == true) {
+			// Reset X and check
+			bool xResetGood = true;
+			for (auto& c : mapColliders)
+				xResetGood &= !Collision::ABB(Vector2D(playerPos.x + Game::hero.collider->xOffset + Game::hero.collider->collider.w, Game::hero.collider->collider.y + Game::hero.collider->collider.h), c->getComponent<ColliderComponent>().collider);
+			if (xResetGood) {
+				std::cout << "good\n";
+				Game::hero.transform->position.x = playerPos.x - 0.01f;
+			}
+			else {
+				std::cout << "false\n";
+				Game::hero.transform->position.y = playerPos.y - 0.01f;
+			}
+		}
+		else if (cp[5] == true) {
+			// Reset X and check
+			bool xResetGood = true;
+			for (auto& c : mapColliders)
+				xResetGood &= !Collision::ABB(Vector2D(playerPos.x + Game::hero.collider->xOffset, Game::hero.collider->collider.y + Game::hero.collider->collider.h), c->getComponent<ColliderComponent>().collider);
+			if (xResetGood) {
+				std::cout << "good\n";
+				Game::hero.transform->position.x = playerPos.x + 0.01f;
+			}
+			else {
+				std::cout << "false\n";
+				Game::hero.transform->position.y = playerPos.y - 0.01f;
+			}
+		}
+	}
+
+
+	if (collided) {
+		// Game::hero.transform->position = playerPos;
+		Game::hero.collider->update();
+		playerCol = Game::hero.collider->collider;
+	}
+	
 	// Check if player hit enemy
 	for (auto& p : playerProjectiles) {
 		for (auto& e : enemies) {
@@ -330,77 +443,18 @@ void Game::update() {
 		}
 	}
 
-	Game::manager.refresh();
-	Game::manager.update();
-
-	SDL_Rect playerCol = Game::hero.collider->collider;
-	for (auto& c : mapColliders) {
-		
-		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-
-		// If there was a collision, see which bound collider
-		// Check if top of player hit bottom of box
-		if (Collision::ABB(Vector2D(playerCol.x + 10, playerCol.y), cCol)) {
-			Game::hero.transform->position.y = playerPos.y + 0.01f;
-			Game::hero.collider->update();
-			playerCol = Game::hero.collider->collider;
-
-			if (Game::hasKey) {
-				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
-					removeGate();
-			}
-		}
-
-		// Check if left of player hit right of box
-		if (Collision::ABB(Vector2D(playerCol.x, playerCol.y+10), cCol)) {
-			Game::hero.transform->position.x = playerPos.x + 0.01f;
-			Game::hero.collider->update();
-			playerCol = Game::hero.collider->collider;
-
-			if (Game::hasKey) {
-				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
-					removeGate();
-			}
-		}
-
-		// Check if right of player hit left of box
-		if (Collision::ABB(Vector2D(playerCol.x + playerCol.w, playerCol.y + 10), cCol)) {
-			Game::hero.transform->position.x = playerPos.x - 0.01f;
-			Game::hero.collider->update();
-			playerCol = Game::hero.collider->collider;
-
-			if (Game::hasKey) {
-				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
-					removeGate();
-			}
-		}
-
-		// Check if bottom of player hit top of box
-		if (Collision::ABB(Vector2D(playerCol.x + 10, playerCol.y + playerCol.h), cCol)) {
-			Game::hero.transform->position.y = playerPos.y - 0.01f;
-			Game::hero.collider->update();
-			playerCol = Game::hero.collider->collider;
-
-			if (Game::hasKey) {
-				if (c->getComponent<ColliderComponent>().tag == "GateA" || c->getComponent<ColliderComponent>().tag == "GateB")
-					removeGate();
-			}
-		}
-	}
-	
 	// If enemy hit player
 	for (auto& p : enemyProjectiles) {
 		
 		if (Collision::AABB(Game::hero.collider->collider, p->getComponent<ColliderComponent>().collider)) {
 			p->destroy();
 			Game::assets->PlaySound("player_hit");
-			float hVal = health.getComponent<StatsComponent>().getResource("health");
-			health.getComponent<StatsComponent>().setResource("health", hVal - Game::hero.damageReductionCoeff*20.0f);
-			if (health.getComponent<StatsComponent>().getResource("health") <= 0) {
+			Game::hero.currHitPoints -= 20 * Game::hero.damageReductionCoeff;
+			
+			if (Game::hero.currHitPoints <= 0) {
 				Game::assets->PlaySound("game_over");
 				Game::hero.transform->position.x = 800*MAP_SCALE;
 				Game::hero.transform->position.y = 600*MAP_SCALE;
-				health.getComponent<StatsComponent>().setResource("health", 100.0f);
 				SDL_Delay(5000);
 				Game::isRunning = false;
 			}
@@ -422,19 +476,16 @@ void Game::update() {
 			c->destroy();
 		}
 	}
-	
-	camera.x = std::max(0.0f, playerPos.x - 400);
-	camera.y = std::max(0.0f, playerPos.y - 320);
-	camera.x = std::min(camera.x, Game::map.mapWidth - camera.w);
-	camera.y = std::min(camera.y, Game::map.mapHeight - camera.h);
-	
-	// Keep health bar in top left of view
-	health.getComponent<TransformComponent>().position.x = camera.x + 10.0;
-	health.getComponent<TransformComponent>().position.y = camera.y + 10.0;
 
-	// Keep energy bar in top left of view
-	energy.getComponent<TransformComponent>().position.x = camera.x + 10.0;
-	energy.getComponent<TransformComponent>().position.y = camera.y + 50.0;
+	// If player is in hazard
+	for (auto& h : mapHazards) {
+		if (Collision::AABB(Game::hero.collider->collider, h->getComponent<ColliderComponent>().collider)) {
+			Game::hero.currHitPoints -= 0.25f;
+		}
+	}
+	
+	// Update camera
+	updateCamera();
 	
 	// Refill some energy
 	updateEnergy();
@@ -452,7 +503,6 @@ void Game::update() {
 		auto& strLabel(Game::manager.addEntity());
 		auto& agiLabel(Game::manager.addEntity());
 		auto& critLabel(Game::manager.addEntity());
-
 
 		snprintf(labelBuffer, 32, "Strength: %02.2f", Game::hero.strength + Game::hero.bowStrength + Game::hero.solveStrengthBonus);
 		strLabel.addComponent<UILabel>(10, camera.h - 125, std::string(labelBuffer), "verdana", white, "a");
@@ -503,12 +553,14 @@ void Game::render() {
 	SDL_RenderClear(renderer);
 	for (auto& t : mapTiles) t->draw();
 	for (auto& t : extraMapTiles) t->draw();
+	for (auto& h : mapHazards) h->draw();
 	for (auto& c : colliders) c->draw();
 	for (auto& p : players) p->draw();
 	for (auto& g : gear) g->draw();
 	for (auto& m : miscs) m->draw();
 	for (auto& e : enemies) e->draw();
 	for (auto& c : collectibles) c->draw();
+	for (auto& g : gates) g->draw();
 	for (auto& p : playerProjectiles) p->draw();
 	for (auto& p : enemyProjectiles) p->draw();
 	for (auto& h : headsUpDisplay) h->draw();
@@ -562,16 +614,54 @@ void Game::cleanMapTiles() {
 		tile->destroy();
 	for (auto& tileCollider : mapColliders)
 		tileCollider->destroy();
+	for (auto& ma : mapHazards)
+		ma->destroy();
 }
 
-void Game::removeGate() {
-	for (auto& tile : mapColliders) {
-		if (tile->getComponent<ColliderComponent>().tag == "GateA" ||
-			tile->getComponent<ColliderComponent>().tag == "GateB")
-			tile->destroy();
+void Game::removeGates() {
+	for (auto& g : gates) {		
+		g->destroy();
 	}
-	for (auto& tile : extraMapTiles) {
-		tile->destroy();
+	Game::map.roomGates[{Game::locationX, Game::locationY}] = 0;
+}
+
+void Game::addGates() {
+	// Add gate to right side of room
+
+	float ss = TILE_SIZE * MAP_SCALE;
+	if ((Game::map.roomGates[{Game::locationX, Game::locationY}] & 0x8) == 0x8) {
+		auto& gate(Game::manager.addEntity());
+		gate.addComponent<TransformComponent>((map.roomWidth - 1)*ss, map.roomHeight / 2 * ss, TILE_SIZE, TILE_SIZE, MAP_SCALE);
+		gate.addComponent<SpriteComponent>("gate");
+		gate.getComponent<SpriteComponent>().spriteFlip = SDL_FLIP_HORIZONTAL;
+		gate.addComponent<ColliderComponent>("gate", 0, 0, ss, ss, false);
+		gate.addGroup(Game::groupGates);
+	}
+	if ((Game::map.roomGates[{Game::locationX, Game::locationY}] & 0x4) == 0x4) {
+		auto& gate(Game::manager.addEntity());
+		gate.addComponent<TransformComponent>(0, map.roomHeight / 2 * ss, TILE_SIZE, TILE_SIZE, MAP_SCALE);
+		gate.addComponent<SpriteComponent>("gate");
+		gate.getComponent<SpriteComponent>().spriteFlip = SDL_FLIP_NONE;
+		gate.addComponent<ColliderComponent>("gate", 0, 0, ss, ss, false);
+		gate.addGroup(Game::groupGates);
+	}
+	if ((Game::map.roomGates[{Game::locationX, Game::locationY}] & 0x2) == 0x2) {
+		auto& gate(Game::manager.addEntity());
+		gate.addComponent<TransformComponent>(map.roomWidth / 2 * ss, 0, TILE_SIZE, TILE_SIZE, MAP_SCALE);
+		gate.addComponent<SpriteComponent>("gate");
+		gate.getComponent<SpriteComponent>().spriteFlip = SDL_FLIP_NONE;
+		gate.getComponent<SpriteComponent>().angle = 90.0f;
+		gate.addComponent<ColliderComponent>("gate", 0, 0, ss, ss, false);
+		gate.addGroup(Game::groupGates);
+	}
+	if ((Game::map.roomGates[{Game::locationX, Game::locationY}] & 0x1) == 0x1) {
+		auto& gate(Game::manager.addEntity());
+		gate.addComponent<TransformComponent>(map.roomWidth / 2 * ss, (map.roomHeight - 1)*ss, TILE_SIZE, TILE_SIZE, MAP_SCALE);
+		gate.addComponent<SpriteComponent>("gate");
+		gate.getComponent<SpriteComponent>().spriteFlip = SDL_FLIP_NONE;
+		gate.getComponent<SpriteComponent>().angle = -90.0f;
+		gate.addComponent<ColliderComponent>("gate", 0, 0, ss, ss, false);
+		gate.addGroup(Game::groupGates);
 	}
 }
 
@@ -596,105 +686,6 @@ void Game::spawnWave(Wave &wave) {
 void Game::checkForQuitEvent() {
 	this->isRunning = Game::event.type != SDL_QUIT;
 }
-/*
-void Game::handleLocationUpdates() {
-	
-	if (Game::location == 0) {
-		// Check if the user entered a dungeon
-
-		if (Game::hero.collider->collider.x > Map::mapWidth) {
-			Game::location = 1;
-
-			// Clean it up
-			// free(map);
-			cleanMapTiles();
-
-			// Load dungeon 0
-			Map::mapWidth = TILE_SIZE * MAP_SCALE * 100;
-			Map::mapHeight = TILE_SIZE * MAP_SCALE * 100;
-			// map = new Map("NewtonsGroveD0_Tileset", MAP_SCALE, TILE_SIZE);
-			map->setTileset("NewtonsGroveD0_Tileset");
-			map->generateOverworld("Assets/Maps/overworld0.map", 100, 100);
-			map->LoadMap("Assets/Maps/overworld0.map", 100, 100, "NewtonsGroveD0_Tileset");
-			Game::hero.transform->position.x = 64;
-			Game::hero.collider->update();
-
-			// Shut the gate
-			/*
-			auto& newTile(Game::manager.addEntity());
-			newTile.addComponent<TransformComponent>(0, 6 * TILE_SIZE* MAP_SCALE, TILE_SIZE, TILE_SIZE, MAP_SCALE);
-			newTile.addComponent<SpriteComponent>("NewtonsGroveD0_Tileset");
-
-			newTile.getComponent<SpriteComponent>().sRect.x = 9 * 32;
-			newTile.getComponent<SpriteComponent>().sRect.y = 32;
-			newTile.addGroup(groupExtraMapTiles);
-
-			auto& gateACollider(Game::manager.addEntity());
-			gateACollider.addComponent<ColliderComponent>("GateA", 0, 6 * TILE_SIZE*MAP_SCALE, 32 * MAP_SCALE, true);
-			gateACollider.addGroup(groupMapColliders);
-
-			// Shut the gate
-			auto& newTile2(Game::manager.addEntity());
-			newTile2.addComponent<TransformComponent>(0, 7 * TILE_SIZE* MAP_SCALE, TILE_SIZE, TILE_SIZE, MAP_SCALE);
-			newTile2.addComponent<SpriteComponent>("NewtonsGroveD0_Tileset");
-			newTile2.getComponent<SpriteComponent>().sRect.x = 0 * 32;
-			newTile2.getComponent<SpriteComponent>().sRect.y = 2 * 32;
-			// newTile2.addComponent<ColliderComponent>("GateB", 0, 7 * TILE_SIZE* MAP_SCALE, 32 * MAP_SCALE, false);
-			newTile2.addGroup(groupExtraMapTiles);
-
-			auto& gateBCollider(Game::manager.addEntity());
-			gateBCollider.addComponent<ColliderComponent>("GateB", 0, 7 * TILE_SIZE*MAP_SCALE, 32 * MAP_SCALE, true);
-			gateBCollider.addGroup(groupMapColliders);
-		}
-	}
-	else if (Game::location == 1) {
-		/*
-		if (Game::hero.collider->collider.x < -50) {
-			// Clean it up
-			free(map);
-			cleanMapTiles();
-
-			// Load dungeon 0
-			Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
-			Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
-			map = new Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
-			map->LoadMap("Assets/Maps/NewtonsGroveOverworld.map", 10, 10, "NewtonsGroveOverworld_Tileset");
-			Game::hero.transform->position.x = 1000;
-			Game::hero.collider->update();
-			Game::location = 0;
-		}
-		
-		//printf("%d\n", map->cavePositionsX[0]);
-		// Check to see if we have entered a case
-		for (int i = 0; i < 10; i++) {
-			//printf("%d %d %d %d\n", Game::hero.collider->collider.x, Game::hero.collider->collider.y, map->cavePositionsX[i]*TILE_SIZE*MAP_SCALE, map->cavePositionsY[i]*TILE_SIZE*MAP_SCALE);
-			if (Game::hero.collider->collider.x > map->cavePositionsX[i]*TILE_SIZE*MAP_SCALE && 
-				Game::hero.collider->collider.x < (map->cavePositionsX[i] + 2) * TILE_SIZE*MAP_SCALE  &&
-				Game::hero.collider->collider.y > map->cavePositionsY[i] *TILE_SIZE*MAP_SCALE &&
-				Game::hero.collider->collider.y < (map->cavePositionsY[i] + 2) * TILE_SIZE*MAP_SCALE) {
-				Game::location = 2;
-				Game::phase = Game::MATH_PHASE_0;
-				Game::phaseTimer = MATH_PHASE_0_TIMER;
-
-				// Clean it up
-				cleanMapTiles(); // Remove all current map tiles
-
-				// Load dungeon 0
-				Map::mapWidth = TILE_SIZE * MAP_SCALE * 10;
-				Map::mapHeight = TILE_SIZE * MAP_SCALE * 10;
-				// map = new Map("NewtonsGroveD0_Tileset", MAP_SCALE, TILE_SIZE);
-				map->setTileset("NewtonsGroveD0_Tileset");
-				map->generateRoom("Assets/Maps/room0.map", 10, 10);
-				map->LoadMap("Assets/Maps/room0.map", 10, 10, "NewtonsGroveD0_Tileset");
-				Game::hero.transform->position.x = 300;
-				Game::hero.transform->position.y = 300;
-				Game::hero.collider->update();
-				break;
-			}
-		}
-		
-	} 
-}*/
 
 void Game::handleLocationUpdates() {
 	if (Game::hero.collider->collider.x > Game::map.mapWidth) {
@@ -702,38 +693,82 @@ void Game::handleLocationUpdates() {
 		std::string nextRoom = "Assets/Maps/Room" + std::to_string(Game::locationX) + "." +
 			std::to_string(Game::locationY) + ".map";
 		cleanMapTiles();
-		map.LoadMap(nextRoom, map.roomWidth, map.roomHeight, map.texId);
+		map.LoadMap(nextRoom, Game::locationX, Game::locationY, map.roomWidth, map.roomHeight, map.texId);
 		Game::hero.transform->position.x = -Game::hero.collider->xOffset;
 		Game::hero.collider->update();
+		updateCamera();
+		updateHUD();
+
+		Game::phase = Game::DOOR_PHASE;
 	} else 	if (Game::hero.collider->collider.x < -Game::hero.collider->collider.w) {
 		Game::locationX--;
 		std::string nextRoom = "Assets/Maps/Room" + std::to_string(Game::locationX) + "." +
 			std::to_string(Game::locationY) + ".map";
 		cleanMapTiles();
-		map.LoadMap(nextRoom, map.roomWidth, map.roomHeight, map.texId);
+		map.LoadMap(nextRoom, Game::locationX, Game::locationY, map.roomWidth, map.roomHeight, map.texId);
 		Game::hero.transform->position.x = Game::map.mapWidth - Game::hero.collider->collider.w - Game::hero.collider->xOffset-1.0f;
 		Game::hero.collider->update();
+		updateCamera();
+		updateHUD();
+
+		Game::phase = Game::DOOR_PHASE;
 	} else 	if (Game::hero.collider->collider.y > Game::map.mapHeight) {
 		Game::locationY++;
 		std::string nextRoom = "Assets/Maps/Room" + std::to_string(Game::locationX) + "." +
 			std::to_string(Game::locationY) + ".map";
 		cleanMapTiles();
-		map.LoadMap(nextRoom, map.roomWidth, map.roomHeight, map.texId);
+		map.LoadMap(nextRoom, Game::locationX, Game::locationY, map.roomWidth, map.roomHeight, map.texId);
 		Game::hero.transform->position.y = -Game::hero.collider->yOffset;
 		Game::hero.collider->update();
+		updateCamera();
+		updateHUD();
+
+		Game::phase = Game::DOOR_PHASE;
 	} else 	if (Game::hero.collider->collider.y < -Game::hero.collider->collider.h) {
 		Game::locationY--;
 		std::string nextRoom = "Assets/Maps/Room" + std::to_string(Game::locationX) + "." +
 			std::to_string(Game::locationY) + ".map";
 		cleanMapTiles();
-		map.LoadMap(nextRoom, map.roomWidth, map.roomHeight, map.texId);
+		map.LoadMap(nextRoom, Game::locationX, Game::locationY, map.roomWidth, map.roomHeight, map.texId);
 		Game::hero.transform->position.y = Game::map.mapHeight - Game::hero.collider->collider.h;
 		Game::hero.collider->update();
+		updateCamera();
+		updateHUD();
+
+		Game::phase = Game::DOOR_PHASE;
 	}
 }
 
 void Game::handlePhaseUpdates() {
-	if (Game::phase == Game::MATH_PHASE_0) {
+	if (Game::phase == Game::DOOR_PHASE) {
+		if (Game::hero.collider->collider.x > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.x < Game::map.mapWidth - TILE_SIZE * MAP_SCALE &&
+			Game::hero.collider->collider.y > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.y + Game::hero.collider->collider.h < Game::map.mapHeight - TILE_SIZE * MAP_SCALE) {
+			if (!Game::map.roomCleared[{Game::locationX, Game::locationY}]) {
+				// Create wave
+
+				Wave w = Wave(Game::locationX, Game::locationY, 1, 1, 2, 100.0f, true);
+				spawnWave(w);
+				addGates();
+				Game::phase = Game::FIGHT_PHASE;
+			}
+			else {
+				Game::phase = Game::PEACE_PHASE;
+			}
+		}
+	}
+	if (Game::phase == Game::FIGHT_PHASE) {
+
+		if (Game::enemyCount == 0) {
+			// Unlock doors
+			// Game::phaseTimer = MATH_PHASE_1_TIMER;
+			Game::phase = Game::PEACE_PHASE;
+			Game::map.roomCleared[{Game::locationX, Game::locationY}] = true;
+			removeGates();
+		}
+	}
+	
+}/*
+	if (Game::phase == Game::MATH_PHASE) {
 		Game::phaseTimer--;
 		if (Game::phaseTimer <= 0) {
 			Game::phase = Game::FIGHT_PHASE_0;
@@ -792,18 +827,34 @@ void Game::handlePhaseUpdates() {
 			//removeGate();
 		}
 	}
-}
+}*/
 
 bool Game::inMathPhase() {
-	return Game::phase == MATH_PHASE_0 ||
-		Game::phase == MATH_PHASE_1 ||
-		Game::phase == MATH_PHASE_2;
+	return Game::phase == MATH_PHASE;
 }
 
 void Game::updateHUD() {
+	
+	// Update health and energy bars
 	energy.getComponent<TransformComponent>().width = Game::hero.energy;
+	health.getComponent<TransformComponent>().width = Game::hero.currHitPoints / Game::hero.maxHitPoints*100.0f;
+
+	// Keep health bar in top left of view
+	health.getComponent<TransformComponent>().position.x = camera.x + 10.0;
+	health.getComponent<TransformComponent>().position.y = camera.y + 10.0;
+
+	// Keep energy bar in top left of view
+	energy.getComponent<TransformComponent>().position.x = camera.x + 10.0;
+	energy.getComponent<TransformComponent>().position.y = camera.y + 50.0;
 }
 
 void Game::updateEnergy() {
 	Game::hero.energy = std::min(100.0f, Game::hero.energy + Game::hero.energyRefillRate);
+}
+
+void Game::updateCamera() {
+	camera.x = std::max(0.0f, Game::hero.transform->position.x - 400);
+	camera.y = std::max(0.0f, Game::hero.transform->position.y - 320);
+	camera.x = std::min(camera.x, Game::map.mapWidth - camera.w);
+	camera.y = std::min(camera.y, Game::map.mapHeight - camera.h);
 }

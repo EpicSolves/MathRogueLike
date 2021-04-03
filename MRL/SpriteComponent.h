@@ -32,6 +32,7 @@ public:
 	int currentFrame = 0;
 	SDL_Rect sRect, dRect;
 	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
+	float angle = 0;
 
 	SpriteComponent() = default;
 	
