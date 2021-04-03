@@ -1,0 +1,71 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Arithmeknights.vcxproj, Arithmenaughts.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Game.cpp
+d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
+  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
+d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
+  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
+  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
+d:\dev\arithmenaughts\mrl\collidercomponent.h(19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.h(91): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\mrl\source\game.cpp(101): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(293): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(295): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(343): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(355): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(367): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(379): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(426): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+d:\dev\arithmenaughts\mrl\source\game.cpp(427): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+d:\dev\arithmenaughts\mrl\source\game.cpp(432): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(433): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(436): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(437): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(527): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(528): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(529): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(530): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(581): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(585): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(589): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(593): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(706): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(722): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(730): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(804): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  d:\dev\arithmenaughts\mrl\source\game.cpp(200): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float,float,float,float,int>(float &&,float &&,float &&,float &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  d:\dev\arithmenaughts\mrl\source\game.cpp(211): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  d:\dev\arithmenaughts\mrl\source\game.cpp(305): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int&,int&,int,int,int>(int &,int &,int &&,int &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+  MRL.vcxproj -> D:\Dev\Arithmenaughts\x64\Debug\MRL.exe
