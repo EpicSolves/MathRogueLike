@@ -19,3 +19,4 @@ class Map;
 class TextureManager;
 class Vector2D;
 class TextureManager;
+class Enemy;

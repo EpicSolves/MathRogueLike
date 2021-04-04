@@ -10,6 +10,7 @@
 #include "ECS.h"
 #include "Wave.h"
 #include "Hero.h"
+#include "Enemy.h"
 
 #define DRAW_COLLISION_BOXES  false
 
@@ -46,6 +47,7 @@ public:
 	void cleanMapTiles();
 	void addGates();
 	void removeGates();
+	void removeDeadEnemies();
 
 	// Spawn a wave of enemies
 	void spawnWave(Wave &wave);
@@ -63,6 +65,7 @@ public:
 	// Update hood
 	void updateHUD();
 	void updateEnergy();
+	void updateNameplates();
 
 	// Update camera
 	void updateCamera();
@@ -87,6 +90,8 @@ public:
 	static Hero hero;
 	static bool updateLabels;
 	static Map map;
+	static std::vector<Enemy> enemies;
+	static int roomsCleared;
 
 	// Determines which phase of the game we are in
 	static enum phase_enum { PEACE_PHASE, DOOR_PHASE, MATH_PHASE, FIGHT_PHASE, BOSS_PHASE };
@@ -120,7 +125,8 @@ public:
 		groupUILabels,
 		groupMapColliders,
 		groupExtraMapTiles,
-		groupGates
+		groupGates,
+		groupNameplates
 	};
 
 private:

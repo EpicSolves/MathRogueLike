@@ -10,6 +10,7 @@ public:
 	~AIComponent() {}
 	void init() override;
 	void update() override;
+	
 private:
 	ColliderComponent *collider;
 	TransformComponent *transform;

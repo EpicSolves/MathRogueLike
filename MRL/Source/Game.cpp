@@ -11,6 +11,7 @@
 #include "SDL_ttf.h"
 #include "ECS.h"
 #include "UILabel.h"
+#include "Enemy.h"
 
 #define RADTODEG(R)((180.0 * R) / PI)
 #define PI 3.14159
@@ -21,6 +22,8 @@
 Map Game::map;
 Manager Game::manager;
 
+std::vector<Enemy> Game::enemies;
+
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
 
@@ -28,6 +31,7 @@ bool Game::isRunning = false;
 bool Game::hasKey = false;
 bool Game::updateLabels = false;
 int Game::enemiesKilled = 0;
+int Game::roomsCleared = 0;
 SDL_Rect Game::camera = { 0, 0, 1024, 768 };
 AssetManager* Game::assets = new AssetManager();
 
@@ -66,11 +70,12 @@ auto& healthLabel(Game::manager.addEntity());
 auto& energyLabel(Game::manager.addEntity());
 auto& score(Game::manager.addEntity());
 auto& strengthLabel(Game::manager.addEntity());
+auto& dfu(Game::manager.addEntity());
 
 // Create out groups
 auto& players(Game::manager.getGroup(Game::groupPlayers));
 auto& miscs(Game::manager.getGroup(Game::groupMisc));
-auto& enemies(Game::manager.getGroup(Game::groupEnemies));
+auto& enemiesS(Game::manager.getGroup(Game::groupEnemies));
 auto& headsUpDisplay(Game::manager.getGroup(Game::groupHUD));
 auto& enemyProjectiles(Game::manager.getGroup(Game::groupEnemyProjectiles));
 auto& playerProjectiles(Game::manager.getGroup(Game::groupPlayerProjectiles));
@@ -83,6 +88,7 @@ auto& extraMapTiles(Game::manager.getGroup(Game::groupExtraMapTiles));
 auto& gear(Game::manager.getGroup(Game::groupGear));
 auto& mapHazards(Game::manager.getGroup(Game::groupMapHazards));
 auto& gates(Game::manager.getGroup(Game::groupGates));
+auto& nameplates(Game::manager.getGroup(Game::groupNameplates));
 
 // Game constructor/deconstructor defaults
 Game::Game() {}
@@ -160,6 +166,7 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	assets->AddTexture("player_run_bow_purple", "Assets/Textures/PlayerRunPurple.png");
 	assets->AddTexture("fire", "Assets/Textures/NewtonsGroveFire.png");
 	assets->AddTexture("gate", "Assets/Textures/NewtonsGroveGate.png");
+	assets->AddTexture("enemy_nameplate", "Assets/Textures/EnemyNameplate.png");
 
 	// Load fonts
 	assets->AddFont("verdana", "Assets/Fonts/Verdana.ttf", 20);
@@ -176,11 +183,24 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 
 	// Load the map
 	map = Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
-	map.generateGraph(2, Vector2D(0, 0), Vector2D(3, 3));
-	map.generateRooms("NewtonsGroveD0_Tileset", 10, 10);
+	int ax = rand() % 5;
+	int ay = rand() % 5;
+	int tx = 5 + rand() % 5;
+	int ty = 5 + rand() % 5;
+	if (rand() % 2 == 0) {
+		map.generateGraph(2, Vector2D(ax, ay), Vector2D(tx, ty));
+		Game::locationX = ax;
+		Game::locationY = ay;
+	}
+	else {
+		map.generateGraph(2, Vector2D(tx, ty), Vector2D(ax, ay));
+		Game::locationX = tx;
+		Game::locationY = ty;
+	}
+	map.generateRooms("NewtonsGroveD0_Tileset", 9, 9);
 	map.LoadMap(map.graphRoot->mapName, map.graphRoot->x, map.graphRoot->y, map.roomWidth, map.roomHeight, map.texId);
 	removeGates();
-	map.roomCleared[{0, 0}] = true;
+	map.roomCleared[{Game::locationX, Game::locationY}] = true;
 
 	// Get an initial keyboard state
 	Game::keyState = SDL_GetKeyboardState(NULL);
@@ -398,7 +418,8 @@ void Game::update() {
 	
 	// Check if player hit enemy
 	for (auto& p : playerProjectiles) {
-		for (auto& e : enemies) {
+		for (auto& e : enemiesS) {
+			
 			if (Collision::AABB(e->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider)) {
 				p->destroy();
 
@@ -407,40 +428,11 @@ void Game::update() {
 				else
 					e->getComponent<ColliderComponent>().health -= Game::hero.damagerPerShot;
 
-				if (e->getComponent<ColliderComponent>().health <= 0.0f && e->isActive()) {
-
-					// Enemy was killed
-					e->destroy();
-					Game::enemyCount--;
-					if (Game::enemyCount == 0 && Game::phase == BOSS_PHASE) {
-						Entity &loot = Game::manager.addEntity();
-						loot.addComponent<TransformComponent>(e->getComponent<ColliderComponent>().collider.x,
-							e->getComponent<ColliderComponent>().collider.y, 128, 128, 2);
-						loot.addComponent<SpriteComponent>("player_idle_bow_purple");
-						loot.addComponent<ColliderComponent>("player_idle_bow_purple", 30, 30, 60, 60, false);
-						loot.addGroup(groupCollectibles);
-					}
-
-					// increment score
-					Game::enemiesKilled++;
-					for (auto& l : UILabels) {
-						if (l->getComponent<UILabel>().tagId == "score_label")
-							l->destroy();
-					}
-
-					auto& newScore(Game::manager.addEntity());
-					SDL_Color white = { 255, 255, 255, 200 };
-					std::string scoreStr = "Score: " + std::to_string(Game::enemiesKilled);
-					newScore.addComponent<UILabel>(10, 90, scoreStr, "verdana", white, "score_label");
-					newScore.addGroup(groupUILabels);
-
-					Game::assets->PlaySound("skeleton_dead");
-				}
-				else {
-					Game::assets->PlaySound("enemy_hit");
-				}
+				Game::assets->PlaySound("enemy_hit");
 			}
+
 		}
+		
 	}
 
 	// If enemy hit player
@@ -483,6 +475,15 @@ void Game::update() {
 			Game::hero.currHitPoints -= 0.25f;
 		}
 	}
+
+	// If enemy is in hazard
+	for (auto& e : enemiesS) {
+		for (auto& h : mapHazards) {
+			if (Collision::AABB(e->getComponent<ColliderComponent>().collider, h->getComponent<ColliderComponent>().collider)) {
+				e->getComponent<ColliderComponent>().health -= 0.5f;
+			}
+		}
+	}
 	
 	// Update camera
 	updateCamera();
@@ -492,6 +493,12 @@ void Game::update() {
 
 	// Update HUD (update hit points and energy bars)
 	updateHUD();
+
+	// Update nameplates
+	updateNameplates();
+
+	// Remove dead enemies
+	removeDeadEnemies();
 
 	if (Game::updateLabels) {
 
@@ -558,11 +565,12 @@ void Game::render() {
 	for (auto& p : players) p->draw();
 	for (auto& g : gear) g->draw();
 	for (auto& m : miscs) m->draw();
-	for (auto& e : enemies) e->draw();
+	for (auto& e : enemiesS) e->draw();
 	for (auto& c : collectibles) c->draw();
 	for (auto& g : gates) g->draw();
 	for (auto& p : playerProjectiles) p->draw();
 	for (auto& p : enemyProjectiles) p->draw();
+	for (auto& n : nameplates) n->draw();
 	for (auto& h : headsUpDisplay) h->draw();
 	for (auto& l : UILabels) l->draw();
 	SDL_RenderPresent(renderer);
@@ -666,6 +674,13 @@ void Game::addGates() {
 }
 
 void Game::spawnWave(Wave &wave) {
+
+	// Erase current enemy vector
+	Game::enemies.clear();
+	for (auto& n : nameplates) {
+		n->destroy();
+	}
+
 	// Spawn enemies from right
 	for (int i = 0; i < wave.rightEnemies; i++)
 		Game::assets->SpawnEnemy(Vector2D(11 * 32 * MAP_SCALE, rand() % (10 * 32 * MAP_SCALE)), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
@@ -706,7 +721,7 @@ void Game::handleLocationUpdates() {
 			std::to_string(Game::locationY) + ".map";
 		cleanMapTiles();
 		map.LoadMap(nextRoom, Game::locationX, Game::locationY, map.roomWidth, map.roomHeight, map.texId);
-		Game::hero.transform->position.x = Game::map.mapWidth - Game::hero.collider->collider.w - Game::hero.collider->xOffset-1.0f;
+		Game::hero.transform->position.x = Game::map.mapWidth - Game::hero.collider->collider.w - Game::hero.collider->xOffset;
 		Game::hero.collider->update();
 		updateCamera();
 		updateHUD();
@@ -730,7 +745,7 @@ void Game::handleLocationUpdates() {
 			std::to_string(Game::locationY) + ".map";
 		cleanMapTiles();
 		map.LoadMap(nextRoom, Game::locationX, Game::locationY, map.roomWidth, map.roomHeight, map.texId);
-		Game::hero.transform->position.y = Game::map.mapHeight - Game::hero.collider->collider.h;
+		Game::hero.transform->position.y = Game::map.mapHeight - Game::hero.collider->collider.h - Game::hero.collider->yOffset;
 		Game::hero.collider->update();
 		updateCamera();
 		updateHUD();
@@ -741,12 +756,15 @@ void Game::handleLocationUpdates() {
 
 void Game::handlePhaseUpdates() {
 	if (Game::phase == Game::DOOR_PHASE) {
-		if (Game::hero.collider->collider.x > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.x < Game::map.mapWidth - TILE_SIZE * MAP_SCALE &&
+		if (Game::hero.collider->collider.x > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.x < Game::map.mapWidth - TILE_SIZE * MAP_SCALE - Game::hero.collider->collider.w &&
 			Game::hero.collider->collider.y > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.y + Game::hero.collider->collider.h < Game::map.mapHeight - TILE_SIZE * MAP_SCALE) {
 			if (!Game::map.roomCleared[{Game::locationX, Game::locationY}]) {
 				// Create wave
-
-				Wave w = Wave(Game::locationX, Game::locationY, 1, 1, 2, 100.0f, true);
+				int te[4] = { 1, 1, 1, 1 };
+				for (int i = 0; i < Game::roomsCleared; i++) {
+					te[rand() % 4]++;
+				}
+				Wave w = Wave(te[0], te[1], te[2], te[3], 2, 100.0f, true);
 				spawnWave(w);
 				addGates();
 				Game::phase = Game::FIGHT_PHASE;
@@ -763,6 +781,7 @@ void Game::handlePhaseUpdates() {
 			// Game::phaseTimer = MATH_PHASE_1_TIMER;
 			Game::phase = Game::PEACE_PHASE;
 			Game::map.roomCleared[{Game::locationX, Game::locationY}] = true;
+			Game::roomsCleared++;
 			removeGates();
 		}
 	}
@@ -857,4 +876,27 @@ void Game::updateCamera() {
 	camera.y = std::max(0.0f, Game::hero.transform->position.y - 320);
 	camera.x = std::min(camera.x, Game::map.mapWidth - camera.w);
 	camera.y = std::min(camera.y, Game::map.mapHeight - camera.h);
+}
+
+void Game::updateNameplates() {
+	for (auto& e : Game::enemies) {
+		e.nameplateTransform->position = e.transform->position;
+		e.nameplateTransform->width = e.collider->health / 100.0f * 24;
+	}
+}
+
+void Game::removeDeadEnemies() {
+	for (auto& e : enemiesS) {
+		if (e->getComponent<ColliderComponent>().health <= 0.0f && e->isActive()) {
+
+			// Enemy was killed
+			e->destroy();
+
+			Game::enemyCount--;
+			Game::assets->PlaySound("skeleton_dead");
+		}
+		else {
+			
+		}
+	}
 }

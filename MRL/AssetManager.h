@@ -9,6 +9,7 @@
 #include "SDL_ttf.h"
 #include "SDL_mixer.h"
 #include "Game.h"
+#include "Enemy.h"
 
 class AssetManager {
 public:
