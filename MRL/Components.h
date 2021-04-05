@@ -9,3 +9,4 @@
 #include "ProjectileComponent.h"
 #include "UILabel.h"
 #include "AIComponent.h"
+#include "NameplateComponent.h"

@@ -146,6 +146,7 @@
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="NameplateComponent.h" />
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="StatsComponent.h" />
     <ClInclude Include="TileComponent.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="NameplateComponent.cpp" />
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="StatsComponent.cpp" />

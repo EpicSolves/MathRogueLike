@@ -16,8 +16,6 @@ public:
 	int xOffset = 0;
 	int yOffset = 0;
 
-	int health = 100.0f;
-
 	SDL_Texture *tex;
 	SDL_Rect sRect, dRect;
 

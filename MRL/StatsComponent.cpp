@@ -1,26 +1,9 @@
 #include "StatsComponent.h"
 
 StatsComponent::StatsComponent() {
-	trackTag = "default";
-	resources[trackTag] = 100.0f;
-}
-StatsComponent::StatsComponent(std::string initialResource, float value) {
-	resources[initialResource] = value;
-	trackTag = initialResource;
+	health = 100.0f;
 }
 
-void StatsComponent::setResource(std::string tag, float value) {
-	resources[tag] = value;
-}
+void StatsComponent::init() { }
 
-float StatsComponent::getResource(std::string tag) {
-	return resources[tag];
-}
-
-void StatsComponent::init() {
-	transform = &entity->getComponent<TransformComponent>();
-}
-
-void StatsComponent::update() {
-	transform->width = (int)resources[trackTag];
-}
+void StatsComponent::update() { }

@@ -16,7 +16,6 @@ void Enemy::init(Vector2D pos, float scale, float health, bool canShoot, std::st
 	entity.getComponent<SpriteComponent>().AddAnimation(texId, texId, 0, 11, 100);
 	entity.getComponent<SpriteComponent>().Play("skeleton_idle");
 	entity.addComponent<ColliderComponent>("enemy", 0, 0, 24 * scale, 32 * scale, false);
-	entity.getComponent<ColliderComponent>().health = health;
 	entity.getComponent<ColliderComponent>().collider.x = pos.x;
 	entity.getComponent<ColliderComponent>().collider.y = pos.y;
 	entity.addComponent<AIComponent>(canShoot);

@@ -421,15 +421,18 @@ void Game::update() {
 	for (auto& p : playerProjectiles) {
 		for (auto& e : enemiesS) {
 			
-			if (Collision::AABB(e->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider)) {
-				p->destroy();
+			if (e->isActive()) {
+				if (Collision::AABB(e->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider)) {
+					p->destroy();
 
-				if (Game::hero.didCrit())
-					e->getComponent<ColliderComponent>().health -= Game::hero.damagerPerShot*1.5f;
-				else
-					e->getComponent<ColliderComponent>().health -= Game::hero.damagerPerShot;
+					if (Game::hero.didCrit()) {
+						e->getComponent<StatsComponent>().health -= Game::hero.damagerPerShot*1.5f;
+					}
+					else
+						e->getComponent<StatsComponent>().health -= Game::hero.damagerPerShot;
 
-				Game::assets->PlaySound("enemy_hit");
+					Game::assets->PlaySound("enemy_hit");
+				}
 			}
 
 		}
@@ -481,7 +484,7 @@ void Game::update() {
 	for (auto& e : enemiesS) {
 		for (auto& h : mapHazards) {
 			if (Collision::AABB(e->getComponent<ColliderComponent>().collider, h->getComponent<ColliderComponent>().collider)) {
-				e->getComponent<ColliderComponent>().health -= 0.5f;
+				e->getComponent<StatsComponent>().health -= 0.5f;
 			}
 		}
 	}
@@ -497,9 +500,6 @@ void Game::update() {
 
 	// Remove dead enemies
 	removeDeadEnemies();
-
-	// Update nameplates
-	updateNameplates();
 
 	if (Game::updateLabels) {
 
@@ -888,27 +888,16 @@ void Game::updateCamera() {
 	camera.y = std::min(camera.y, Game::map.mapHeight - camera.h);
 }
 
-void Game::updateNameplates() {
-	for (auto& e : Game::enemyVec) {
-		if (e.entity.isActive()) {
-			e.nameplateTransform->position = e.transform->position;
-			e.nameplateTransform->width = e.collider->health / 100.0f * 24;
-		}
-	}
-}
-
 void Game::removeDeadEnemies() {
 	for (auto& e : enemiesS) {
-		if (e->getComponent<ColliderComponent>().health <= 0.0f && e->isActive()) {
+		
+		if (e->getComponent<StatsComponent>().health <= 0.0f && e->isActive()) {
 
 			// Enemy was killed
 			e->destroy();
 
 			Game::enemyCount--;
 			Game::assets->PlaySound("skeleton_dead");
-		}
-		else {
-			
 		}
 	}
 }

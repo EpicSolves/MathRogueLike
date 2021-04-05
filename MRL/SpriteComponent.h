@@ -14,8 +14,7 @@ class Animation;
 class SpriteComponent : public Component {
 
 private:
-	TransformComponent *transform;
-	SDL_Texture *texture;
+	
 
 	bool animated = false;
 	int frames = 0;
@@ -26,6 +25,8 @@ private:
 	std::string currentAId = "";
 
 public:
+	TransformComponent *transform;
+	SDL_Texture *texture;
 	bool isGear = false;
 	bool isText = false;
 	int animIndex = 0;
