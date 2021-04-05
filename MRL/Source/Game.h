@@ -90,7 +90,7 @@ public:
 	static Hero hero;
 	static bool updateLabels;
 	static Map map;
-	static std::vector<Enemy> enemies;
+	static std::vector<Enemy> enemyVec;
 	static int roomsCleared;
 
 	// Determines which phase of the game we are in

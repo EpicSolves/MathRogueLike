@@ -3,11 +3,14 @@
 #include "Components.h"
 #include "Game.h"
 
-Enemy::Enemy() : entity(Game::manager.addEntity()) {}
+Enemy::Enemy() : entity(Game::manager.addEntity()) {
+	printf("created\n");
+}
 
 //Enemy::Enemy(const Enemy &old) : entity(Game::manager.addEntity()) { }
 
 void Enemy::init(Vector2D pos, float scale, float health, bool canShoot, std::string texId) {
+	printf("Inited\n");
 	entity.addComponent<TransformComponent>(pos.x, pos.y, 24, 32, scale);
 	entity.addComponent<SpriteComponent>(true, 0);
 	entity.getComponent<SpriteComponent>().AddAnimation(texId, texId, 0, 11, 100);
@@ -30,7 +33,9 @@ void Enemy::init(Vector2D pos, float scale, float health, bool canShoot, std::st
 	
 	Game::enemyCount++;
 }
-Enemy::~Enemy() { }
+Enemy::~Enemy() { 
+	printf("destroyed\n");
+}
 
 /*
 Enemy Enemy::operator =(Enemy e) {

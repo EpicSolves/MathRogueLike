@@ -26,9 +26,10 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 }
 
 void AssetManager::SpawnEnemy(Vector2D pos, float scale, float health, bool canShoot, std::string texId) {
+	printf("In spawn enemy\n");
 	Enemy e = Enemy();
 	e.init(pos, scale, health, canShoot, texId);
-	Game::enemies.push_back(e);
+	Game::enemyVec.push_back(e);
 }
 
 void AssetManager::PlaySound(std::string id) {

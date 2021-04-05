@@ -22,7 +22,7 @@
 Map Game::map;
 Manager Game::manager;
 
-std::vector<Enemy> Game::enemies;
+std::vector<Enemy> Game::enemyVec;
 
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -42,6 +42,7 @@ int Game::enemyCount = 0;
 
 // Initialize phase to math phase and timer to 15 seconds
 int Game::phase = Game::PEACE_PHASE;
+int Game::phaseTimer = 0;
 int Game::locationX = 0;
 int Game::locationY = 0;
 
@@ -494,11 +495,11 @@ void Game::update() {
 	// Update HUD (update hit points and energy bars)
 	updateHUD();
 
-	// Update nameplates
-	updateNameplates();
-
 	// Remove dead enemies
 	removeDeadEnemies();
+
+	// Update nameplates
+	updateNameplates();
 
 	if (Game::updateLabels) {
 
@@ -676,7 +677,7 @@ void Game::addGates() {
 void Game::spawnWave(Wave &wave) {
 
 	// Erase current enemy vector
-	Game::enemies.clear();
+	Game::enemyVec.clear();
 	for (auto& n : nameplates) {
 		n->destroy();
 	}
@@ -759,22 +760,31 @@ void Game::handlePhaseUpdates() {
 		if (Game::hero.collider->collider.x > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.x < Game::map.mapWidth - TILE_SIZE * MAP_SCALE - Game::hero.collider->collider.w &&
 			Game::hero.collider->collider.y > TILE_SIZE*MAP_SCALE && Game::hero.collider->collider.y + Game::hero.collider->collider.h < Game::map.mapHeight - TILE_SIZE * MAP_SCALE) {
 			if (!Game::map.roomCleared[{Game::locationX, Game::locationY}]) {
-				// Create wave
-				int te[4] = { 1, 1, 1, 1 };
-				for (int i = 0; i < Game::roomsCleared; i++) {
-					te[rand() % 4]++;
-				}
-				Wave w = Wave(te[0], te[1], te[2], te[3], 2, 100.0f, true);
-				spawnWave(w);
+
 				addGates();
-				Game::phase = Game::FIGHT_PHASE;
+				Game::phase = Game::MATH_PHASE;
+				Game::phaseTimer = MATH_PHASE_0_TIMER;
 			}
 			else {
 				Game::phase = Game::PEACE_PHASE;
 			}
 		}
 	}
-	if (Game::phase == Game::FIGHT_PHASE) {
+	else if (Game::phase == Game::MATH_PHASE) {
+		Game::phaseTimer--;
+		if (Game::phaseTimer <= 0) {
+			Game::phase = Game::FIGHT_PHASE;
+
+			// Create wave
+			int te[4] = { 1, 1, 1, 1 };
+			for (int i = 0; i < Game::roomsCleared; i++) {
+				te[rand() % 4]++;
+			}
+			Wave w = Wave(te[0], te[1], te[2], te[3], 2, 100.0f, true);
+			spawnWave(w);
+		}
+	}
+	else if (Game::phase == Game::FIGHT_PHASE) {
 
 		if (Game::enemyCount == 0) {
 			// Unlock doors
@@ -879,9 +889,11 @@ void Game::updateCamera() {
 }
 
 void Game::updateNameplates() {
-	for (auto& e : Game::enemies) {
-		e.nameplateTransform->position = e.transform->position;
-		e.nameplateTransform->width = e.collider->health / 100.0f * 24;
+	for (auto& e : Game::enemyVec) {
+		if (e.entity.isActive()) {
+			e.nameplateTransform->position = e.transform->position;
+			e.nameplateTransform->width = e.collider->health / 100.0f * 24;
+		}
 	}
 }
 
