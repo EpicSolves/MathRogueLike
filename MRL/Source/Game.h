@@ -11,12 +11,11 @@
 #include "Wave.h"
 #include "Hero.h"
 #include "Enemy.h"
+#include <random>
 
 #define DRAW_COLLISION_BOXES  false
 
-#define MATH_PHASE_0_TIMER    10*60
-#define MATH_PHASE_1_TIMER    10*60
-#define MATH_PHASE_2_TIMER    10*60
+#define MATH_PHASE_TIMER    5*60
 
 class Game {
 
@@ -69,6 +68,8 @@ public:
 
 	// Update camera
 	void updateCamera();
+
+	static std::mt19937 rng;
 
 	static Manager manager;
 	static AssetManager *assets;

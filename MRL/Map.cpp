@@ -102,9 +102,12 @@ void Map::generateRoom(std::string filePath, int rx, int ry, int width, int heig
 	}
 
 	// Add a fire with 50% probability
-	while (rand() % 100 < 50) {	
-		int mx = 1 + rand() % (roomWidth - 2);
-		int my = 1 + rand() % (roomHeight - 2);
+	std::uniform_int_distribution<> coin(0, 1);
+	std::uniform_int_distribution<> r(1, roomWidth - 1);
+	while (coin(Game::rng) == 0) {	
+		
+		int mx = r(Game::rng);
+		int my = r(Game::rng);
 		if (roomAnimations.find({ rx, ry }) != roomAnimations.end()) {
 			if (roomAnimations[{rx, ry}].find({ mx,my }) != roomAnimations[{rx, ry}].end()) {
 				continue;

@@ -70,5 +70,6 @@ void Hero::calculateStats() {
 }
 
 bool Hero::didCrit() {
-	return 1 + (rand() % 100) <= critical;
+	std::uniform_real_distribution<float> d(0.0f, 100.0f);
+	return d(Game::rng) <= critical;
 }

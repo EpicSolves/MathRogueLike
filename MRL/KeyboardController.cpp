@@ -98,59 +98,61 @@ void KeyboardController::update() {
 	}
 	 
 	// We can still solve during the fighting phase, but it is optional
-	if (Game::keyState[SDL_SCANCODE_LEFT] || Game::keyState[SDL_SCANCODE_KP_4] || Game::keyState[SDL_SCANCODE_H]) {
-		if (!leftDebounce) {
-			if (shotTimer == 0) {
-				leftDebounce = true;
-				float x = transform->position.x + 58 * transform->scale;
-				float y = transform->position.y + 52 * transform->scale;
-				float xVel = -1.0f;
-				float yVel = transform->velocity.y / 2.0f;
+	if (Game::phase != Game::MATH_PHASE) {
+		if (Game::keyState[SDL_SCANCODE_LEFT] || Game::keyState[SDL_SCANCODE_KP_4] || Game::keyState[SDL_SCANCODE_H]) {
+			if (!leftDebounce) {
+				if (shotTimer == 0) {
+					leftDebounce = true;
+					float x = transform->position.x + 58 * transform->scale;
+					float y = transform->position.y + 52 * transform->scale;
+					float xVel = -1.0f;
+					float yVel = transform->velocity.y / 2.0f;
 
-				Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(xVel, yVel), 400, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
-				Game::assets->PlaySound("star_shot");
-				shotTimer = Game::hero.shotCooldown;
+					Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(xVel, yVel), 400, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
+					Game::assets->PlaySound("star_shot");
+					shotTimer = Game::hero.shotCooldown;
+				}
 			}
 		}
-	}
-	else leftDebounce = false;
-	if (Game::keyState[SDL_SCANCODE_RIGHT] || Game::keyState[SDL_SCANCODE_KP_6] || Game::keyState[SDL_SCANCODE_L]) {
-		if (!rightDebounce) {
-			if (shotTimer == 0) {
-				rightDebounce = true;
-				float x = transform->position.x + 58 * transform->scale;
-				float y = transform->position.y + 52 * transform->scale;
-				Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(1, transform->velocity.y / 2.0f), 400, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
-				Game::assets->PlaySound("star_shot");
-				shotTimer = Game::hero.shotCooldown;
+		else leftDebounce = false;
+		if (Game::keyState[SDL_SCANCODE_RIGHT] || Game::keyState[SDL_SCANCODE_KP_6] || Game::keyState[SDL_SCANCODE_L]) {
+			if (!rightDebounce) {
+				if (shotTimer == 0) {
+					rightDebounce = true;
+					float x = transform->position.x + 58 * transform->scale;
+					float y = transform->position.y + 52 * transform->scale;
+					Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(1, transform->velocity.y / 2.0f), 400, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
+					Game::assets->PlaySound("star_shot");
+					shotTimer = Game::hero.shotCooldown;
+				}
 			}
 		}
-	}
-	else rightDebounce = false;
-	if (Game::keyState[SDL_SCANCODE_DOWN] || Game::keyState[SDL_SCANCODE_KP_5] || Game::keyState[SDL_SCANCODE_J]) {
-		if (!downDebounce) {
-			if (shotTimer == 0) {
-				downDebounce = true;
-				float x = transform->position.x + 58 * transform->scale;
-				float y = transform->position.y + 52 * transform->scale;
-				Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, 1), 600, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
-				Game::assets->PlaySound("star_shot");
-				shotTimer = Game::hero.shotCooldown;
+		else rightDebounce = false;
+		if (Game::keyState[SDL_SCANCODE_DOWN] || Game::keyState[SDL_SCANCODE_KP_5] || Game::keyState[SDL_SCANCODE_J]) {
+			if (!downDebounce) {
+				if (shotTimer == 0) {
+					downDebounce = true;
+					float x = transform->position.x + 58 * transform->scale;
+					float y = transform->position.y + 52 * transform->scale;
+					Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, 1), 600, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
+					Game::assets->PlaySound("star_shot");
+					shotTimer = Game::hero.shotCooldown;
+				}
 			}
 		}
-	}
-	else downDebounce = false;
-	if (Game::keyState[SDL_SCANCODE_UP] || Game::keyState[SDL_SCANCODE_KP_8] || Game::keyState[SDL_SCANCODE_K]) {
-		if (!upDebounce) {
-			if (shotTimer == 0) {
-				upDebounce = true;
-				float x = transform->position.x + 58 * transform->scale;
-				float y = transform->position.y + 52 * transform->scale;
-				Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, -1), 600, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
-				Game::assets->PlaySound("star_shot");
-				shotTimer = Game::hero.shotCooldown;
+		else downDebounce = false;
+		if (Game::keyState[SDL_SCANCODE_UP] || Game::keyState[SDL_SCANCODE_KP_8] || Game::keyState[SDL_SCANCODE_K]) {
+			if (!upDebounce) {
+				if (shotTimer == 0) {
+					upDebounce = true;
+					float x = transform->position.x + 58 * transform->scale;
+					float y = transform->position.y + 52 * transform->scale;
+					Game::assets->CreateProjectile(Vector2D(x, y), Vector2D(transform->velocity.x / 2.0f, -1), 600, Game::hero.shotSpeed, "star", Game::groupPlayerProjectiles);
+					Game::assets->PlaySound("star_shot");
+					shotTimer = Game::hero.shotCooldown;
+				}
 			}
 		}
+		else upDebounce = false;
 	}
-	else upDebounce = false;
 }

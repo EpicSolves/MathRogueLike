@@ -12,12 +12,14 @@
 #include "ECS.h"
 #include "UILabel.h"
 #include "Enemy.h"
+#include <random>
 
 #define RADTODEG(R)((180.0 * R) / PI)
 #define PI 3.14159
 #define SDL_SUCCESS 0
 #define MAP_SCALE 4
 #define TILE_SIZE 32
+std::mt19937 Game::rng(std::random_device{}());
 
 Map Game::map;
 Manager Game::manager;
@@ -103,7 +105,7 @@ Game::~Game() {}
 void Game::init(const char *title, int xPosition, int yPosition, int width, int height, bool fullscreen) {
 
 	// Seed the RNG
-	srand(time(NULL));
+	// srand(time(NULL));
 
 	// Handle flags, such as "fullscreen"
 	int flags = 0;
@@ -184,11 +186,13 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 
 	// Load the map
 	map = Map("NewtonsGroveOverworld_Tileset", MAP_SCALE, TILE_SIZE);
-	int ax = rand() % 5;
-	int ay = rand() % 5;
-	int tx = 5 + rand() % 5;
-	int ty = 5 + rand() % 5;
-	if (rand() % 2 == 0) {
+	std::uniform_int_distribution<> dist(0, 4);
+	std::uniform_int_distribution<> coin(0, 1);
+	int ax = dist(rng);
+	int ay = dist(rng);
+	int tx = 5 + dist(rng);
+	int ty = 5 + dist(rng);
+	if (coin(rng) == 0) {
 		map.generateGraph(2, Vector2D(ax, ay), Vector2D(tx, ty));
 		Game::locationX = ax;
 		Game::locationY = ay;
@@ -284,11 +288,12 @@ void Game::update() {
 		// Show solve pad and check to see if we have solved a problem. Increment stats if so
 		showSolvePad();
 		if (solvedProblem()) {
+			std::uniform_real_distribution<double> dist(0.0, 0.02);
 			Game::assets->PlaySound("energy_up");
-			Game::hero.solveAgilityBonus += (rand() % 100) * 0.0002f;
-			Game::hero.solveStrengthBonus += (rand() % 100) * 0.0002f;
-			Game::hero.solveStaminaBonus += (rand() % 100) * 0.0002f;
-			Game::hero.solveCriticalBonus += (rand() % 100) * 0.0002f;
+			Game::hero.solveAgilityBonus += dist(rng);
+			Game::hero.solveStrengthBonus += dist(rng);
+			Game::hero.solveStaminaBonus += dist(rng);
+			Game::hero.solveCriticalBonus += dist(rng);
 			Game::hero.statsChanged = true;
 			generatenewProblem();
 		}
@@ -608,9 +613,10 @@ void Game::generatenewProblem() {
 	int currentAnswer = Game::numberAVal + Game::numberBVal;
 
 	// Keep generating numbers until we have a new addition problem
+	std::uniform_int_distribution<> d(1, 5);
 	while (currentAnswer == Game::numberAVal + Game::numberBVal) {
-		Game::numberAVal = rand() % 5;
-		Game::numberBVal = rand() % 5;
+		Game::numberAVal = d(Game::rng);
+		Game::numberBVal = d(Game::rng);
 	}
 }
 
@@ -682,21 +688,23 @@ void Game::spawnWave(Wave &wave) {
 		n->destroy();
 	}
 
+	std::uniform_int_distribution<> d(0, 9 * 32 * MAP_SCALE);
+
 	// Spawn enemies from right
 	for (int i = 0; i < wave.rightEnemies; i++)
-		Game::assets->SpawnEnemy(Vector2D(11 * 32 * MAP_SCALE, rand() % (10 * 32 * MAP_SCALE)), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+		Game::assets->SpawnEnemy(Vector2D(11 * 32 * MAP_SCALE, d(Game::rng)), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
 
 	// Spawn enemies from the left
 	for (int i = 0; i < wave.leftEnemies; i++)
-		Game::assets->SpawnEnemy(Vector2D(-1 * 32 * MAP_SCALE, rand() % (10 * 32 * MAP_SCALE)), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+		Game::assets->SpawnEnemy(Vector2D(-1 * 32 * MAP_SCALE, d(Game::rng)), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
 
 	// Spawn from top
 	for (int i = 0; i < wave.topEnemies; i++)
-		Game::assets->SpawnEnemy(Vector2D(rand() % (10 * 32 * MAP_SCALE), -1*32*MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+		Game::assets->SpawnEnemy(Vector2D(d(Game::rng), -1*32*MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
 
 	// Spawn from bottom
 	for (int i = 0; i < wave.bottomEnemies; i++)
-		Game::assets->SpawnEnemy(Vector2D(rand() % (10 * 32 * MAP_SCALE), 11 * 32 * MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
+		Game::assets->SpawnEnemy(Vector2D(d(Game::rng), 11 * 32 * MAP_SCALE), wave.scale, wave.health, wave.canShoot, "skeleton_idle");
 }
 
 void Game::checkForQuitEvent() {
@@ -763,7 +771,7 @@ void Game::handlePhaseUpdates() {
 
 				addGates();
 				Game::phase = Game::MATH_PHASE;
-				Game::phaseTimer = MATH_PHASE_0_TIMER;
+				Game::phaseTimer = MATH_PHASE_TIMER;
 			}
 			else {
 				Game::phase = Game::PEACE_PHASE;
@@ -777,8 +785,9 @@ void Game::handlePhaseUpdates() {
 
 			// Create wave
 			int te[4] = { 1, 1, 1, 1 };
+			std::uniform_int_distribution<> d(0, 3);
 			for (int i = 0; i < Game::roomsCleared; i++) {
-				te[rand() % 4]++;
+				te[d(Game::rng)]++;
 			}
 			Wave w = Wave(te[0], te[1], te[2], te[3], 2, 100.0f, true);
 			spawnWave(w);

@@ -1,7 +1,7 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Arithmeknights.vcxproj, Arithmenaughts.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   AIComponent.cpp
 d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\mrl\source\game.h(98): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
 d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
   d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
 d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
@@ -10,116 +10,8 @@ d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': typ
   d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
 d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
   d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\aicomponent.cpp(43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\aicomponent.cpp(44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Animation.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-  AssetManager.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\assetmanager.cpp(22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\assetmanager.cpp(23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\assetmanager.cpp(36): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\assetmanager.cpp(37): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-  d:\dev\arithmenaughts\mrl\assetmanager.cpp(21): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[11],float,float,float,float,bool>(const char (&)[11],float &&,float &&,float &&,float &&,bool &&)' being compiled
-          with
-          [
-              T=ColliderComponent
-          ]
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  d:\dev\arithmenaughts\mrl\assetmanager.cpp(31): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float&,float&,int,int,float&>(float &,float &,int &&,int &&,float &)' being compiled
-          with
-          [
-              T=TransformComponent
-          ]
-  ColliderComponent.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-  Collision.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\collision.cpp(58): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(62): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(66): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(74): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(78): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(82): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\collision.cpp(86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Enemy.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\enemy.cpp(19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\enemy.cpp(20): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  d:\dev\arithmenaughts\mrl\enemy.cpp(14): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float&,float&,int,int,float&>(float &,float &,int &&,int &&,float &)' being compiled
-          with
-          [
-              T=TransformComponent
-          ]
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-  d:\dev\arithmenaughts\mrl\enemy.cpp(18): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[6],int,int,float,float,bool>(const char (&)[6],int &&,int &&,float &&,float &&,bool &&)' being compiled
-          with
-          [
-              T=ColliderComponent
-          ]
-  GameObject.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\mrl\aicomponent.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\aicomponent.cpp(47): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Hero.cpp
 d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
   d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
@@ -129,7 +21,7 @@ d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': typ
   d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
 d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
   d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\mrl\source\game.h(98): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
 d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\dev\arithmenaughts\mrl\hero.cpp(24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 d:\dev\arithmenaughts\mrl\hero.cpp(54): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
@@ -155,31 +47,6 @@ d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 
           [
               T=ColliderComponent
           ]
-  KeyboardController.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(62): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(68): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(70): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(75): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(77): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(112): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(123): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(125): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(136): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(138): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(149): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\keyboardcontroller.cpp(151): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Map.cpp
 d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
   d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
@@ -190,14 +57,14 @@ d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': typ
 d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
   d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
 d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\map.cpp(277): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(299): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(304): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(313): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(322): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(331): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(372): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.h(98): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\mrl\map.cpp(280): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\map.cpp(302): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\map.cpp(307): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\map.cpp(316): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\map.cpp(325): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\map.cpp(334): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\map.cpp(375): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
@@ -217,185 +84,7 @@ c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\1
           [
               _Ty1=float
           ]
-  d:\dev\arithmenaughts\mrl\map.cpp(291): note: see reference to function template instantiation 'std::pair<float,std::string> &std::pair<float,std::string>::operator =<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>,0>(std::pair<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>> &&) noexcept' being compiled
-  d:\dev\arithmenaughts\mrl\map.cpp(291): note: see reference to function template instantiation 'std::pair<float,std::string> &std::pair<float,std::string>::operator =<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>,0>(std::pair<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>> &&) noexcept' being compiled
-  NameplateComponent.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.cpp(20): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\nameplatecomponent.cpp(21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  ProjectileComponent.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-  Game.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\source\game.cpp(106): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(192): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(197): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(359): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(373): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(387): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(401): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(588): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(589): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(590): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(591): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(687): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(691): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(695): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(699): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(713): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(725): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(737): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(749): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(868): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(869): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(872): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(873): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(876): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(877): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.cpp(885): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-d:\dev\arithmenaughts\mrl\source\game.cpp(886): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-  d:\dev\arithmenaughts\mrl\source\game.cpp(223): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float,float,float,float,int>(float &&,float &&,float &&,float &&,int &&)' being compiled
-          with
-          [
-              T=TransformComponent
-          ]
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-  d:\dev\arithmenaughts\mrl\source\game.cpp(233): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
-          with
-          [
-              T=TransformComponent
-          ]
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  d:\dev\arithmenaughts\mrl\source\game.cpp(646): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[5],int,int,float&,float&,bool>(const char (&)[5],int &&,int &&,float &,float &,bool &&)' being compiled
-          with
-          [
-              T=ColliderComponent
-          ]
-  main.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-  SpriteComponent.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.cpp(20): warning C4018: '>=': signed/unsigned mismatch
-  StatsComponent.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-  TextureManager.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-  TileComponent.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\tilecomponent.cpp(8): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\tilecomponent.cpp(9): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\tilecomponent.cpp(25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\tilecomponent.cpp(26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  TransformComponent.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-  UILabel.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(97): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+  d:\dev\arithmenaughts\mrl\map.cpp(294): note: see reference to function template instantiation 'std::pair<float,std::string> &std::pair<float,std::string>::operator =<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>,0>(std::pair<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>> &&) noexcept' being compiled
+  d:\dev\arithmenaughts\mrl\map.cpp(294): note: see reference to function template instantiation 'std::pair<float,std::string> &std::pair<float,std::string>::operator =<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>,0>(std::pair<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>> &&) noexcept' being compiled
   Generating Code...
   MRL.vcxproj -> D:\Dev\Arithmenaughts\x64\Debug\MRL.exe

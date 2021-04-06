@@ -30,7 +30,8 @@ void AIComponent::update() {
 
 			// Create a little explosion to start the game	
 			Game::assets->CreateProjectile(Vector2D(enemyX, enemyY), Vector2D(xVel, -yVel), 600, 4, "star", Game::groupEnemyProjectiles);
-			shootTimer = 180 + rand() % 180;
+			std::uniform_int_distribution<> y(180, 360);
+			shootTimer = y(Game::rng);
 		}
 	}
 
@@ -38,16 +39,19 @@ void AIComponent::update() {
 	abilityTimer--;
 	if (!abilityIsActive) {
 		if (abilityTimer <= 0) {
-			abilityTimer = 120 + rand() % 120;
+			std::uniform_int_distribution<> d(120, 240);
+			abilityTimer = d(Game::rng);
 			abilityIsActive = true;
-			randA = rand() % 1000 / 0.123;
-			randB = rand() % 1000 / 0.123;
+			std::uniform_real_distribution<double> x(0, 2 * 3.14159);
+			randA = x(Game::rng);
+			randB = x(Game::rng);
 		}
 	}
 	else {
 		if (abilityTimer <= 0) {
+			std::uniform_int_distribution<> d(720, 1000);
 			abilityIsActive = false;
-			abilityTimer = 720 + rand() % 360;
+			abilityTimer = d(Game::rng);
 		}
 	}
 
