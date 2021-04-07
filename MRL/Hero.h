@@ -55,6 +55,10 @@ public:
 	float solveCriticalBonus = 0.0f;
 	float solveStaminaBonus = 0.0f;
 
+	// Abilities
+	int frostShotTimer = 300;
+	float frostShotCooldown = 300;
+
 	// Functions
 	void init();
 	void setBow(std::string color);

@@ -41,6 +41,9 @@ int Game::numberAVal = 0;
 int Game::numberBVal = 0;
 int Game::counter = 0;
 int Game::enemyCount = 0;
+int Game::mouseX = 0;
+int Game::mouseY = 0;
+Uint32 Game::mouseState = NULL;
 
 // Initialize phase to math phase and timer to 15 seconds
 int Game::phase = Game::PEACE_PHASE;
@@ -73,7 +76,6 @@ auto& healthLabel(Game::manager.addEntity());
 auto& energyLabel(Game::manager.addEntity());
 auto& score(Game::manager.addEntity());
 auto& strengthLabel(Game::manager.addEntity());
-auto& dfu(Game::manager.addEntity());
 
 // Create out groups
 auto& players(Game::manager.getGroup(Game::groupPlayers));
@@ -92,6 +94,7 @@ auto& gear(Game::manager.getGroup(Game::groupGear));
 auto& mapHazards(Game::manager.getGroup(Game::groupMapHazards));
 auto& gates(Game::manager.getGroup(Game::groupGates));
 auto& nameplates(Game::manager.getGroup(Game::groupNameplates));
+auto& frostProjectiles(Game::manager.getGroup(Game::groupFrostProjectiles));
 
 // Game constructor/deconstructor defaults
 Game::Game() {}
@@ -170,6 +173,10 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	assets->AddTexture("fire", "Assets/Textures/NewtonsGroveFire.png");
 	assets->AddTexture("gate", "Assets/Textures/NewtonsGroveGate.png");
 	assets->AddTexture("enemy_nameplate", "Assets/Textures/EnemyNameplate.png");
+	assets->AddTexture("enemy_star_spin", "Assets/Textures/enemy_star_spin.png");
+	assets->AddTexture("ice_arrow", "Assets/Textures/ice_arrow.png");
+	assets->AddTexture("normal_arrow", "Assets/Textures/normal_arrow.png");
+	assets->AddTexture("state_frozen", "Assets/Textures/state_frozen.png");
 
 	// Load fonts
 	assets->AddFont("verdana", "Assets/Fonts/Verdana.ttf", 20);
@@ -207,8 +214,11 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	removeGates();
 	map.roomCleared[{Game::locationX, Game::locationY}] = true;
 
-	// Get an initial keyboard state
+	// Get an keyboard state
 	Game::keyState = SDL_GetKeyboardState(NULL);
+
+	// Get mouse state
+	Game::mouseState = SDL_GetMouseState(&Game::mouseX, &Game::mouseY);
 
 	// Create Labels
 	SDL_Color white = { 255, 255, 255, 200 };
@@ -264,6 +274,7 @@ void Game::handleEvents() {
 
 	// Get keyboard state
 	Game::keyState = SDL_GetKeyboardState(NULL);
+	Game::mouseState = SDL_GetMouseState(&Game::mouseX, &Game::mouseY);
 }
 
 /**************************************************************************/
@@ -439,9 +450,7 @@ void Game::update() {
 					Game::assets->PlaySound("enemy_hit");
 				}
 			}
-
 		}
-		
 	}
 
 	// If enemy hit player
@@ -490,6 +499,28 @@ void Game::update() {
 		for (auto& h : mapHazards) {
 			if (Collision::AABB(e->getComponent<ColliderComponent>().collider, h->getComponent<ColliderComponent>().collider)) {
 				e->getComponent<StatsComponent>().health -= 0.5f;
+			}
+		}
+	}
+
+	// Check if player hit enemy with frozen arrow
+	for (auto& p : frostProjectiles) {
+		for (auto& e : enemiesS) {
+
+			if (e->isActive() == true && e->getComponent<AIComponent>().state == STATE_NORMAL) {
+				if (Collision::AABB(e->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider)) {
+					
+					e->getComponent<AIComponent>().state = STATE_FROZEN;
+					auto& ice(Game::manager.addEntity());
+					ice.addComponent<TransformComponent>(e->getComponent<ColliderComponent>().collider.x,
+						e->getComponent<ColliderComponent>().collider.y,
+						e->getComponent<ColliderComponent>().collider.w,
+						e->getComponent<ColliderComponent>().collider.h,
+						1.0f);
+					ice.addComponent<SpriteComponent>("state_frozen");
+					ice.addGroup(groupMisc);
+					Game::assets->PlaySound("enemy_hit");
+				}
 			}
 		}
 	}
@@ -575,6 +606,7 @@ void Game::render() {
 	for (auto& c : collectibles) c->draw();
 	for (auto& g : gates) g->draw();
 	for (auto& p : playerProjectiles) p->draw();
+	for (auto& p : frostProjectiles) p->draw();
 	for (auto& p : enemyProjectiles) p->draw();
 	for (auto& n : nameplates) n->draw();
 	for (auto& h : headsUpDisplay) h->draw();

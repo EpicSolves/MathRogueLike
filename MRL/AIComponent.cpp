@@ -8,6 +8,11 @@ void AIComponent::init() {
 
 void AIComponent::update() {
 
+	if (state == STATE_FROZEN) {
+		transform->velocity = Vector2D(0, 0);
+		return;
+	}
+
 	// Calculate center of player and enemy
 	float enemyX = collider->collider.x + collider->collider.w / 2.0f;
 	float enemyY = collider->collider.y + collider->collider.h / 2.0f;
@@ -29,7 +34,7 @@ void AIComponent::update() {
 			float yVel = std::sin(angle);
 
 			// Create a little explosion to start the game	
-			Game::assets->CreateProjectile(Vector2D(enemyX, enemyY), Vector2D(xVel, -yVel), 600, 4, "star", Game::groupEnemyProjectiles);
+			Game::assets->CreateProjectile(Vector2D(enemyX, enemyY), Vector2D(xVel, -yVel), 600, 4, "enemy_star_spin", Game::groupEnemyProjectiles);
 			std::uniform_int_distribution<> y(180, 360);
 			shootTimer = y(Game::rng);
 		}

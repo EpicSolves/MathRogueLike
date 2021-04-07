@@ -1,7 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Arithmeknights.vcxproj, Arithmenaughts.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  AIComponent.cpp
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(98): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+  Game.cpp
 d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
   d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
 d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
@@ -10,81 +8,71 @@ d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': typ
   d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
 d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
   d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\aicomponent.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\aicomponent.cpp(47): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Hero.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\source\game.h(98): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
 d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\hero.cpp(24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\hero.cpp(54): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\hero.cpp(55): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\hero.cpp(66): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.h(100): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
+d:\dev\arithmenaughts\mrl\source\game.cpp(203): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(208): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(304): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(305): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(306): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(307): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(375): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(389): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(403): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(417): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(625): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(626): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(627): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(628): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(727): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(731): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(735): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(739): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(753): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(765): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(777): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(789): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(909): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(910): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(913): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(914): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(917): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(918): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\source\game.cpp(926): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
           with
           [
-              _Ty=int
+              _Ty=float
           ]
-  d:\dev\arithmenaughts\mrl\hero.cpp(7): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
+d:\dev\arithmenaughts\mrl\source\game.cpp(927): warning C4244: '=': conversion from 'const _Ty' to 'int', possible loss of data
           with
           [
-              T=TransformComponent
+              _Ty=float
           ]
 d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
           with
           [
-              _Ty=double
+              _Ty=float
           ]
-  d:\dev\arithmenaughts\mrl\hero.cpp(10): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[7],int,int,double,double,bool>(const char (&)[7],int &&,int &&,double &&,double &&,bool &&)' being compiled
+  d:\dev\arithmenaughts\mrl\source\game.cpp(237): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,float,float,float,float,int>(float &&,float &&,float &&,float &&,int &&)' being compiled
           with
           [
-              T=ColliderComponent
+              T=TransformComponent
           ]
-  Map.cpp
-d:\dev\arithmenaughts\mrl\transformcomponent.h(6): warning C4099: 'TransformComponent': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\transformcomponent.h(6): note: see declaration of 'TransformComponent'
-d:\dev\arithmenaughts\mrl\animation.h(6): warning C4099: 'Animation': type name first seen using 'class' now seen using 'struct'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\spritecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\animation.h(6): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\nameplatecomponent.h(12): warning C4099: 'Animation': type name first seen using 'struct' now seen using 'class'
-  d:\dev\arithmenaughts\mrl\spritecomponent.h(12): note: see declaration of 'Animation'
-d:\dev\arithmenaughts\mrl\hero.h(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\source\game.h(98): warning C4091: 'static ': ignored on left of 'Game::phase_enum' when no variable is declared
-d:\dev\arithmenaughts\mrl\map.cpp(280): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(302): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(307): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(316): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(325): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(334): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\dev\arithmenaughts\mrl\map.cpp(375): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-  d:\dev\arithmenaughts\mrl\map.cpp(59): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int&,int&,int&>(int &&,int &&,int &,int &,int &)' being compiled
+  d:\dev\arithmenaughts\mrl\source\game.cpp(247): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
           with
           [
               T=TransformComponent
           ]
-c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\14.16.27023\include\utility(303): warning C4244: '=': conversion from '_Ty' to '_Ty1', possible loss of data
+d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\dev\arithmenaughts\mrl\ecs.h(79): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  d:\dev\arithmenaughts\mrl\source\game.cpp(684): note: see reference to function template instantiation 'T &Entity::addComponent<ColliderComponent,const char(&)[5],int,int,float&,float&,bool>(const char (&)[5],int &&,int &&,float &,float &,bool &&)' being compiled
           with
           [
-              _Ty=double
+              T=ColliderComponent
           ]
-          and
-          [
-              _Ty1=float
-          ]
-  d:\dev\arithmenaughts\mrl\map.cpp(294): note: see reference to function template instantiation 'std::pair<float,std::string> &std::pair<float,std::string>::operator =<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>,0>(std::pair<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>> &&) noexcept' being compiled
-  d:\dev\arithmenaughts\mrl\map.cpp(294): note: see reference to function template instantiation 'std::pair<float,std::string> &std::pair<float,std::string>::operator =<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>,0>(std::pair<double,std::basic_string<char,std::char_traits<char>,std::allocator<char>>> &&) noexcept' being compiled
-  Generating Code...
   MRL.vcxproj -> D:\Dev\Arithmenaughts\x64\Debug\MRL.exe

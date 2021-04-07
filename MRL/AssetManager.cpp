@@ -11,12 +11,27 @@ AssetManager::AssetManager() {
 }
 AssetManager::~AssetManager() { }
 
+void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, std::string texId, std::size_t group, float angle) {
+	auto &projectile(manager->addEntity());
+	projectile.addComponent<TransformComponent>(pos.x, pos.y, 32, 32, 2);
+	projectile.addComponent<SpriteComponent>(true, 1);
+	projectile.getComponent<SpriteComponent>().AddAnimation(texId, texId, 0, 2, 100);
+	projectile.getComponent<SpriteComponent>().Play(texId);
+	projectile.getComponent<SpriteComponent>().angle = -1.0*angle * 180 / 3.1415;
+	projectile.addComponent<ProjectileComponent>(range, speed, vel);
+	projectile.addComponent<ColliderComponent>("projectile", 4.0f, 1.0f, 22.0f, 27.0f, false);
+	projectile.getComponent<ColliderComponent>().collider.x = pos.x;
+	projectile.getComponent<ColliderComponent>().collider.y = pos.y;
+	projectile.addGroup(group);
+	// test
+}
+
 void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, std::string texId, std::size_t group) {
 	auto &projectile(manager->addEntity());
 	projectile.addComponent<TransformComponent>(pos.x, pos.y, 32, 32, 1);
 	projectile.addComponent<SpriteComponent>(true, 1);
-	projectile.getComponent<SpriteComponent>().AddAnimation("star_spin", "star_spin", 0, 2, 100);
-	projectile.getComponent<SpriteComponent>().Play("star_spin");
+	projectile.getComponent<SpriteComponent>().AddAnimation(texId, texId, 0, 2, 100);
+	projectile.getComponent<SpriteComponent>().Play(texId);
 	projectile.addComponent<ProjectileComponent>(range, speed, vel);
 	projectile.addComponent<ColliderComponent>("projectile", 4.0f, 1.0f, 22.0f, 27.0f, false);
 	projectile.getComponent<ColliderComponent>().collider.x = pos.x;

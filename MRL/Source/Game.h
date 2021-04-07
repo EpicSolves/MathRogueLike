@@ -64,7 +64,6 @@ public:
 	// Update hood
 	void updateHUD();
 	void updateEnergy();
-	void updateNameplates();
 
 	// Update camera
 	void updateCamera();
@@ -82,6 +81,9 @@ public:
 	static int numberAVal;
 	static int numberBVal;
 	static const uint8_t *keyState;
+	static Uint32 mouseState;
+	static int mouseX;
+	static int mouseY;
 	static bool healCD;
 	static std::map<std::string, int> spelltimers;
 	static int locationX;
@@ -127,7 +129,8 @@ public:
 		groupMapColliders,
 		groupExtraMapTiles,
 		groupGates,
-		groupNameplates
+		groupNameplates,
+		groupFrostProjectiles
 	};
 
 private:
