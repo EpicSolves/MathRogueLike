@@ -134,7 +134,7 @@ void KeyboardController::update() {
 			float xVel = std::cos(angle);
 			float yVel = std::sin(angle);
 
-			Game::assets->CreateProjectile(Vector2D(playerX - 32.0f, playerY - 40.0f), Vector2D(xVel, -yVel), 400, Game::hero.shotSpeed, "ice_arrow", Game::groupFrostProjectiles, angle);
+			Game::assets->CreateProjectile(Vector2D(playerX - 32.0f, playerY - 40.0f), Vector2D(xVel, -yVel), 400, Game::hero.shotSpeed, "fire_arrow", Game::groupFireProjectiles, angle);
 			Game::assets->PlaySound("star_shot");
 			Game::hero.frostShotTimer = Game::hero.frostShotCooldown;
 		}

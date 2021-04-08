@@ -42,17 +42,33 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 
 void AssetManager::SpawnEnemy(Vector2D pos, float scale, float health, bool canShoot, std::string texId) {
 	printf("In spawn enemy\n");
+
+	// Create new entity
 	auto& enemy(manager->addEntity());
+
+	// Add a position component
 	enemy.addComponent<TransformComponent>(pos.x, pos.y, 24, 32, scale);
+
+	// Add the main sprite of the enemy
 	enemy.addComponent<SpriteComponent>(true, 0);
 	enemy.getComponent<SpriteComponent>().AddAnimation(texId, texId, 0, 11, 100);
 	enemy.getComponent<SpriteComponent>().Play("skeleton_idle");
+
+	// Make the enemy be collidable
 	enemy.addComponent<ColliderComponent>("enemy", 0, 0, 24 * scale, 32 * scale, false);
 	enemy.getComponent<ColliderComponent>().collider.x = pos.x;
 	enemy.getComponent<ColliderComponent>().collider.y = pos.y;
+
+	// Give the enemy stats
 	enemy.addComponent<StatsComponent>();
+
+	// Give the enemy brains
 	enemy.addComponent<AIComponent>(canShoot);
+
+	// Give the enemy a nameplate
 	enemy.addComponent<NameplateComponent>("enemy_nameplate");
+
+	// Add the enemy to the group of enemy entities
 	enemy.addGroup(Game::groupEnemies);
 	Game::enemyCount++;
 }

@@ -5,6 +5,7 @@
 
 #define STATE_NORMAL 0
 #define STATE_FROZEN 1
+#define STATE_FIRE   2
 
 class AIComponent : public Component {
 public:

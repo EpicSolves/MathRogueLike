@@ -12,6 +12,24 @@ void AIComponent::update() {
 		transform->velocity = Vector2D(0, 0);
 		return;
 	}
+	else if (state == STATE_FIRE) {
+		// Calculate center of player and enemy
+		float enemyX = collider->collider.x + collider->collider.w / 2.0f;
+		float enemyY = collider->collider.y + collider->collider.h / 2.0f;
+
+		float playerX = Game::hero.collider->collider.x +
+			Game::hero.collider->collider.w / 2.0f;
+		float playerY = Game::hero.collider->collider.y +
+			Game::hero.collider->collider.h / 2.0f;
+
+		float xDist = playerX - enemyX;
+		float yDist = enemyY - playerY;
+		float angle = std::atan2(yDist, xDist);
+		float xVel = std::cos(angle);
+		float yVel = std::sin(angle);
+		transform->velocity = Vector2D(-xVel / 1.0f, yVel / 1.0f);
+		return;
+	}
 
 	// Calculate center of player and enemy
 	float enemyX = collider->collider.x + collider->collider.w / 2.0f;

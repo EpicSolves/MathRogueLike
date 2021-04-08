@@ -95,6 +95,7 @@ auto& mapHazards(Game::manager.getGroup(Game::groupMapHazards));
 auto& gates(Game::manager.getGroup(Game::groupGates));
 auto& nameplates(Game::manager.getGroup(Game::groupNameplates));
 auto& frostProjectiles(Game::manager.getGroup(Game::groupFrostProjectiles));
+auto& fireProjectiles(Game::manager.getGroup(Game::groupFireProjectiles));
 
 // Game constructor/deconstructor defaults
 Game::Game() {}
@@ -175,8 +176,10 @@ void Game::init(const char *title, int xPosition, int yPosition, int width, int 
 	assets->AddTexture("enemy_nameplate", "Assets/Textures/EnemyNameplate.png");
 	assets->AddTexture("enemy_star_spin", "Assets/Textures/enemy_star_spin.png");
 	assets->AddTexture("ice_arrow", "Assets/Textures/ice_arrow.png");
+	assets->AddTexture("fire_arrow", "Assets/Textures/fire_arrow.png");
 	assets->AddTexture("normal_arrow", "Assets/Textures/normal_arrow.png");
 	assets->AddTexture("state_frozen", "Assets/Textures/state_frozen.png");
+	assets->AddTexture("state_fire", "Assets/Textures/state_fire.png");
 
 	// Load fonts
 	assets->AddFont("verdana", "Assets/Fonts/Verdana.ttf", 20);
@@ -524,6 +527,30 @@ void Game::update() {
 			}
 		}
 	}
+
+	// Check if player hit enemy with fire arrow
+	for (auto& p : fireProjectiles) {
+		for (auto& e : enemiesS) {
+
+			if (e->isActive() == true && e->getComponent<AIComponent>().state == STATE_NORMAL) {
+				if (Collision::AABB(e->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider)) {
+
+					e->getComponent<AIComponent>().state = STATE_FIRE;
+					auto& fire(Game::manager.addEntity());
+					fire.addComponent<TransformComponent>(e->getComponent<ColliderComponent>().collider.x,
+						e->getComponent<ColliderComponent>().collider.y,
+						e->getComponent<ColliderComponent>().collider.w,
+						e->getComponent<ColliderComponent>().collider.h,
+						1.0f);
+					fire.addComponent<SpriteComponent>(true, 99);
+					fire.getComponent<SpriteComponent>().AddAnimation("state_fire", "state_fire", 0, 2, 100);
+					fire.getComponent<SpriteComponent>().Play("state_fire");
+					fire.addGroup(groupMisc);
+					Game::assets->PlaySound("enemy_hit");
+				}
+			}
+		}
+	}
 	
 	// Update camera
 	updateCamera();
@@ -607,6 +634,7 @@ void Game::render() {
 	for (auto& g : gates) g->draw();
 	for (auto& p : playerProjectiles) p->draw();
 	for (auto& p : frostProjectiles) p->draw();
+	for (auto& p : fireProjectiles) p->draw();
 	for (auto& p : enemyProjectiles) p->draw();
 	for (auto& n : nameplates) n->draw();
 	for (auto& h : headsUpDisplay) h->draw();

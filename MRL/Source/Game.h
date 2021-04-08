@@ -130,7 +130,8 @@ public:
 		groupExtraMapTiles,
 		groupGates,
 		groupNameplates,
-		groupFrostProjectiles
+		groupFrostProjectiles,
+		groupFireProjectiles
 	};
 
 private:
